@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 18:29:56 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/18 13:15:37 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/19 21:38:35 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define MAX_FD			1024
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 	10
+#  define BUFFER_SIZE 	1
 # endif
 
 typedef struct s_block
@@ -30,12 +30,11 @@ typedef struct s_block
 typedef struct s_sinfo
 {
 	unsigned int	sindex[MAX_FD];
-	struct s_block	sblock[MAX_FD];
+	struct s_block	*sblock[MAX_FD];
 }	t_sinfo;
 
 t_block	*ft_read_next_block(int fd);
-void	ft_freeblocks(t_block **blk);
-
+void	ft_free_all(t_block **block, t_sinfo *si, int fd);
 char	*get_next_line(int fd);
 
 #endif
