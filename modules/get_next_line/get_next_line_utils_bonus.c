@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 18:29:52 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/19 21:34:36 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/20 01:04:33 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	ft_free_all(t_block **block, t_sinfo *si, int fd)
 		*block = next;
 	}
 	*block = NULL;
-	if (si->sindex[fd] == BUFFER_SIZE && si->sblock[fd])
+	if (si->sindex[fd] == BUFFER_SIZE && si->sblock[fd] != NULL)
 	{
 		free(si->sblock[fd]);
 		si->sblock[fd] = NULL;

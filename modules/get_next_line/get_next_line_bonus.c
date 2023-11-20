@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 18:29:54 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/19 21:40:08 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/20 01:05:17 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	ft_get_line_length(int fd, t_block *block, unsigned int index)
 
 	if (!block)
 		return (-1);
-	block->next = NULL;
 	len = 0;
 	while (1)
 	{
@@ -81,6 +80,7 @@ char	*get_next_line(int fd)
 		si.sblock[fd] = (t_block *)malloc(sizeof(t_block));
 	line = NULL;
 	len = ft_get_line_length(fd, si.sblock[fd], si.sindex[fd]);
+	(void)len;
 	if (len > 0)
 	{
 		line = (char *)malloc((len + 1) * sizeof(char));
@@ -94,19 +94,4 @@ char	*get_next_line(int fd)
 		si.sindex[fd] = BUFFER_SIZE;
 	ft_free_all(&si.sblock[fd]->next, &si, fd);
 	return (line);
-}
-
-#include <stdio.h>
-#include <fcntl.h>
-int	main()
-{
-	int fd1 = open("test", O_RDONLY);
-	printf("LINE 1: %s\n\n", get_next_line(fd1));
-	printf("LINE 2: %s\n\n", get_next_line(fd1));
-	int fd2 = open("test1", O_RDONLY);
-	printf("LINE 1: %s\n\n", get_next_line(fd2));
-	printf("LINE 2: %s\n\n", get_next_line(fd2));
-	close(fd1);
-	close(fd2);
-	return (0);
 }
