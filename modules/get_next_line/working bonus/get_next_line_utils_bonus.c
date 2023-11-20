@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 18:29:52 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/20 17:13:30 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/20 17:10:51 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,19 @@ t_block	*ft_read_next_block(int fd)
 	return (new_block);
 }
 
-void	ft_freeblocks(t_block **block)
+void	ft_free_all(t_block **block, t_sinfo *si, int fd)
 {
 	t_block	*next;
-
 	while (*block != NULL)
 	{
 		next = (*block)->next;
 		free(*block);
 		*block = next;
 	}
-	*block = NULL;
+		*block = NULL;
+	if (si->sindex[fd] == BUFFER_SIZE && si->sblock[fd] != NULL)
+	{
+		free(si->sblock[fd]);
+		si->sblock[fd] = NULL;
+	}
 }

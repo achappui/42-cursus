@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 18:29:54 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/20 01:05:17 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/20 17:28:58 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_fill_line(char *line, t_sinfo *si, unsigned int index, int fd)
 {
 	t_block	*blocks;
 
-	blocks = si->sblock[fd];
+	blocks = &si->sblock[fd];
 	while (1)
 	{
 		while (index < BUFFER_SIZE)
@@ -26,7 +26,7 @@ void	ft_fill_line(char *line, t_sinfo *si, unsigned int index, int fd)
 				*line = '\n';
 				si->sindex[fd] = index + 1;
 				while (++index < BUFFER_SIZE)
-					si->sblock[fd]->buffer[index] = blocks->buffer[index];
+					si->sblock[fd].buffer[index] = blocks->buffer[index];
 				return ;
 			}
 			else if (blocks->buffer[index] == '\0')
@@ -45,8 +45,6 @@ int	ft_get_line_length(int fd, t_block *block, unsigned int index)
 {
 	int	len;
 
-	if (!block)
-		return (-1);
 	len = 0;
 	while (1)
 	{
@@ -69,18 +67,14 @@ int	ft_get_line_length(int fd, t_block *block, unsigned int index)
 
 char	*get_next_line(int fd)
 {
-	static t_sinfo	si = {.sindex = {[0 ...MAX_FD - 1] = BUFFER_SIZE}, \
-							.sblock = {[0 ...MAX_FD - 1] = NULL}};
+	static t_sinfo	si = {.sindex = {[0 ...MAX_FD - 1] = BUFFER_SIZE}};
 	char			*line;
 	int				len;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || fd > MAX_FD - 1)
 		return (NULL);
-	if (!si.sblock[fd])
-		si.sblock[fd] = (t_block *)malloc(sizeof(t_block));
 	line = NULL;
-	len = ft_get_line_length(fd, si.sblock[fd], si.sindex[fd]);
-	(void)len;
+	len = ft_get_line_length(fd, &si.sblock[fd], si.sindex[fd]);
 	if (len > 0)
 	{
 		line = (char *)malloc((len + 1) * sizeof(char));
@@ -92,6 +86,6 @@ char	*get_next_line(int fd)
 	}
 	else
 		si.sindex[fd] = BUFFER_SIZE;
-	ft_free_all(&si.sblock[fd]->next, &si, fd);
+	ft_freeblocks(&si.sblock[fd].next);
 	return (line);
 }
