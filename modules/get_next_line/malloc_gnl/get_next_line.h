@@ -1,40 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/09 18:29:56 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/20 16:33:40 by achappui         ###   ########.fr       */
+/*   Created: 2023/11/20 19:16:41 by achappui          #+#    #+#             */
+/*   Updated: 2023/11/21 15:11:14 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_BONUS_H
-# define GET_NEXT_LINE_BONUS_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 # include <unistd.h>
 # include <stdlib.h>
-
-# define MAX_FD			1024
-
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 	50
+#  define BUFFER_SIZE	50
 # endif
 
-typedef struct s_block
+typedef struct s_gnl_block
 {
-	char			buffer[BUFFER_SIZE];
-	struct s_block	*next;
-}	t_block;
+	char				*buff;
+	struct s_gnl_block	*next;
+}	t_gnl_block;
 
-typedef struct s_sinfo
-{
-	unsigned int	sindex[MAX_FD];
-	struct s_block	*sblock[MAX_FD];
-}	t_sinfo;
-
-t_block	*ft_read_next_block(int fd);
-void	ft_free_all(t_block **block, t_sinfo *si, int fd);
-char	*get_next_line(int fd);
+t_gnl_block	*ft_read_next_block(int fd);
+void		ft_free_update_rest(t_gnl_block *s, char *rest);
+char		*get_next_line(int fd);
 
 #endif

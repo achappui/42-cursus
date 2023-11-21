@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 19:16:36 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/21 11:42:19 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:10:53 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <stdio.h>
+#include "get_next_line_bonus.h"
 
 t_gnl_block	*ft_read_next_block(int fd)
 {
@@ -21,42 +20,46 @@ t_gnl_block	*ft_read_next_block(int fd)
 	new_elem = (t_gnl_block *)malloc(sizeof(t_gnl_block));
 	if (new_elem == NULL)
 		return (NULL);
-	((char *)new_elem->buff)[BUFFER_SIZE] = '\0';
-	((char *)new_elem->buff)[BUFFER_SIZE + 1] = ' ';
-	read_bytes = read(fd, new_elem->buff, BUFFER_SIZE);
-	if (read_bytes == -1)
+	new_elem->buff = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (new_elem->buff == NULL)
 	{
 		free(new_elem);
 		return (NULL);
 	}
-	else if (read_bytes < BUFFER_SIZE)
+	read_bytes = read(fd, new_elem->buff, BUFFER_SIZE);
+	if (read_bytes == -1)
 	{
-		((char *)new_elem->buff)[read_bytes] = '\0';
-		((char *)new_elem->buff)[read_bytes + 1] = '\0';
+		free(new_elem->buff);
+		free(new_elem);
+		return (NULL);
 	}
+	((char *)new_elem->buff)[read_bytes] = '\0';
 	new_elem->next = NULL;
 	return (new_elem);
 }
 
-void	ft_free_update_rest(t_gnl_static *s, char *rest)
+void	ft_free_update_rest(t_gnl_block *s, char *rest)
 {
 	t_gnl_block	*next;
 	t_gnl_block	*blocks;
 
 	blocks = s->next;
-	if (s->buff)
+	if (rest)
 	{
-		free(s->buff);
+		if (s->buff)
+			free(s->buff);
 		s->buff = rest;
 	}
 	else
 	{
-		free(s->buff);
+		if (s->buff)
+			free(s->buff);
 		s->buff = NULL;
 	}
 	while (blocks)
 	{
 		next = blocks->next;
+		free(blocks->buff);
 		free(blocks);
 		blocks = next;
 	}
