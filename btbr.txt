@@ -1,0 +1,5 @@
+Refaire
+
+Str join
+Strlcat
+ft_substr incorrect de comparer start avec len car start pourrait faire une boucle
