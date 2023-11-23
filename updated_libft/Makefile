@@ -1,8 +1,8 @@
-NAME      	= libft.a
+NAME      	=	libft.a
 
-LIBFT_DIR	= libft
-PRINTF_DIR	= ft_printf
-GNL_DIR		= get_next_line
+LIBFT_DIR	= 	libft
+PRINTF_DIR	= 	ft_printf
+GNL_DIR		= 	get_next_line
 
 SRC_LIBFT	=	ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c \
 				ft_isprint.c ft_toupper.c ft_tolower.c ft_strlen.c \
@@ -21,13 +21,13 @@ SRC_PRINTF	= 	ft_printf/ft_printf.c ft_printf/ft_options.c \
 
 SRC_GNL		=	get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 
-OBJ_LIBFT	= $(addprefix $(LIBFT_DIR)/, $(notdir $(SRC_LIBFT:%.c=%.o)))
-OBJ_PRINTF	= $(addprefix $(PRINTF_DIR)/, $(notdir $(SRC_PRINTF:%.c=%.o)))
-OBJ_GNL		= $(addprefix $(GNL_DIR)/, $(notdir $(SRC_GNL:%.c=%.o)))
+OBJ_LIBFT	=	$(addprefix $(LIBFT_DIR)/, $(notdir $(SRC_LIBFT:%.c=%.o)))
+OBJ_PRINTF	= 	$(addprefix $(PRINTF_DIR)/, $(notdir $(SRC_PRINTF:%.c=%.o)))
+OBJ_GNL		=	$(addprefix $(GNL_DIR)/, $(notdir $(SRC_GNL:%.c=%.o)))
 
-OBJ			= $(OBJ_LIBFT) $(OBJ_PRINTF) $(OBJ_GNL)
-CFLAGS		= -Wall -Wextra -Werror
-CC			= gcc
+OBJ			=	$(OBJ_LIBFT) $(OBJ_PRINTF) $(OBJ_GNL)
+CFLAGS		=	-Wall -Wextra -Werror
+CC			=	gcc
 
 all: $(NAME)
 
