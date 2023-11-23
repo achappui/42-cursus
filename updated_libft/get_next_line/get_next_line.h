@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 18:29:56 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/21 16:58:59 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/23 10:34:29 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdlib.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 50
+#  define BUFFER_SIZE	50
 # endif
 
 typedef struct s_block
@@ -33,7 +33,5 @@ typedef struct s_sinfo
 
 t_block	*ft_read_next_block(int fd);
 void	ft_freeblocks(t_block **blk);
-
-char	*get_next_line(int fd);
 
 #endif

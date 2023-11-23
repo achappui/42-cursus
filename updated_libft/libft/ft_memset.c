@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 10:27:03 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/01 10:28:46 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/23 10:01:15 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+void	*ft_memset(void *b, int c, size_t len)
 {
-	if (dst == NULL && src == NULL)
-		return (NULL);
-	while (n-- > 0)
-		*(((char *)dst) + n) = *(((char *)src) + n);
-	return (dst);
+	while (len > 0)
+		((unsigned char *)b)[--len] = (unsigned char)c;
+	return (b);
 }

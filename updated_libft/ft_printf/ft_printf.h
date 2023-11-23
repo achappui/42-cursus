@@ -6,13 +6,12 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 13:54:27 by marvin            #+#    #+#             */
-/*   Updated: 2023/11/10 15:40:46 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/23 10:39:18 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
-# include "libft/libft.h"
 # include <unistd.h>
 # include <stdint.h>
 # include <stdarg.h>
@@ -48,7 +47,6 @@ typedef struct s_count
 # define F_PLUS					0b00010000
 # define F_PRECISION			0b00100000
 
-int	ft_printf(const char *str, ...);
 int	update_options(const char *str, t_options *o);
 int	ft_putchars(int n, char c);
 int	ft_print_str(const char *s, t_options *o);
@@ -56,4 +54,5 @@ int	ft_print_char(unsigned char c, t_options *o);
 int	ft_print_sint(long long n, t_options *o);
 int	ft_print_uint(unsigned long long n, const char *base, \
 					char blen, t_options *o);
+
 #endif

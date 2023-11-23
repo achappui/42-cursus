@@ -1,19 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftprintf.h                                      :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 13:54:27 by marvin            #+#    #+#             */
-/*   Updated: 2023/11/07 14:29:15 by achappui         ###   ########.fr       */
+/*   Created: 2023/11/01 10:27:03 by achappui          #+#    #+#             */
+/*   Updated: 2023/11/23 10:01:48 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFTPRINTF_H
-# define LIBFTPRINTF_H
-# include "libft/libft.h"
+#include "libft.h"
 
-int	ft_printf(const char *format, ...);
+char	*ft_strdup(const char *s)
+{
+	char			*s_dup;
+	unsigned int	len;
 
-#endif
+	len = 0;
+	while (s[len] != '\0')
+		len++;
+	s_dup = (char *)malloc((len + 1) * sizeof(char));
+	if (!s_dup)
+		return (NULL);
+	while (*s != '\0')
+		*s_dup++ = *s++;
+	*s_dup = '\0';
+	s_dup -= len;
+	return (s_dup);
+}

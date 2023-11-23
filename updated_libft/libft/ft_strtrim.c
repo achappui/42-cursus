@@ -6,13 +6,13 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 10:27:03 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/01 10:29:44 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/23 10:33:15 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_in_set(char const *set, char character)
+static char	ft_in_set(char const *set, char character)
 {
 	while (*set != '\0')
 	{

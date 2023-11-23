@@ -6,19 +6,11 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 19:11:11 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/10 15:41:12 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/23 10:36:34 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-static void	init_options(t_options *o)
-{
-	o->flags = 0;
-	o->precision = 0;
-	o->spe = 0;
-	o->width = 0;
-}
 
 static char	in_flags(char c, const char *flags)
 {
@@ -79,7 +71,10 @@ int	update_options(const char *str, t_options *o)
 	const char	*old_str;
 
 	old_str = str;
-	init_options(o);
+	o->flags = 0;
+	o->precision = 0;
+	o->spe = 0;
+	o->width = 0;
 	get_flags_width_precision(&str, o);
 	if (get_specifier(&str, o))
 		return (str - old_str);

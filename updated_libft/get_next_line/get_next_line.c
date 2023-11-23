@@ -6,13 +6,13 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 18:29:54 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/20 16:54:31 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/23 10:37:48 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	ft_fill_line(char *line, t_sinfo *si, unsigned int index)
+static void	ft_fill_line(char *line, t_sinfo *si, unsigned int index)
 {
 	t_block	*blocks;
 
@@ -41,7 +41,7 @@ void	ft_fill_line(char *line, t_sinfo *si, unsigned int index)
 	}
 }
 
-int	ft_get_line_length(int fd, t_block *block, unsigned int index)
+static int	ft_get_line_length(int fd, t_block *block, unsigned int index)
 {
 	int	len;
 

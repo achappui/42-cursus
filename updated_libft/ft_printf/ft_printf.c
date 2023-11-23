@@ -6,13 +6,13 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 09:01:12 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/10 15:39:18 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/23 10:38:23 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	choose_printer(va_list args, t_options *o)
+static int	choose_printer(va_list args, t_options *o)
 {
 	if (o->spe == '%')
 		return (ft_print_char('%', o));
@@ -33,7 +33,8 @@ int	choose_printer(va_list args, t_options *o)
 	return (-1);
 }
 
-char	percent_state(const char **str, t_count *c, t_options *o, va_list args)
+static char	percent_state(const char **str, t_count *c, t_options *o, \
+							va_list args)
 {
 	int	tmp_len;
 
