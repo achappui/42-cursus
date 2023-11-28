@@ -6,33 +6,15 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:58:59 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/27 22:52:50 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/28 13:59:32 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdlib.h>
-
-static void	error_handler(t_satcks *s, char err)
-{
-	if (err == 1)
-		exit(write(2, "Error\n", 6));
-	else if (err == 2)
-	{
-		free(s->stack_a);
-		exit(write(2, "Error\n", 6));
-	}
-	else if (err == 3)
-	{
-		free(s->stack_a);
-		free(s->stack_b);
-		exit(write(2, "Error\n", 6));
-	}
-}
 
 static char	valid_int(const char *str, const char *int_max)
 {
-	size_t			len;
+	unsigned int	len;
 	unsigned int	i;
 	char			sign;
 
@@ -58,39 +40,55 @@ static char	valid_int(const char *str, const char *int_max)
 	return (1);
 }
 
-static char	already_in(int integer, unsigned int start, t_satcks *s)
+static char	already_in(int elem, unsigned int size, t_stacks *s)
 {
-	while (++start < s->size_a)
-		if (s->stack_a[start] == integer)
+	while (++size < s->size_a)
+		if (s->stack_a[size] == elem)
 			return (1);
 	return (0);
 }
 
-void	input_formater(t_satcks *s, int	argc, char *argv[])
+char	format_input(t_stacks *s, unsigned int size, char **args)
 {
-	if (argc-- == 2)
-	{
-		argv = ft_split(argv[1], WHITE_SPACES);
-		argc = 0;
-		while (argv[argc] != NULL)
-			argc++;
-	}
-	else
-		argv++;
-	s->stack_a = (int *)malloc((argc) * sizeof(int));
+	s->stack_a = (int *)malloc((size) * sizeof(int));
 	if (!s->stack_a)
-		error_handler(s, 1);
-	s->size_a = argc;
-	s->stack_b = (int *)malloc((argc) * sizeof(int));
+		return (0);
+	s->stack_b = (int *)malloc((size) * sizeof(int));
 	if (!s->stack_b)
-		error_handler(s, 2);
-	s->size_b = 0;
-	while (--argc >= 0)
+		return (0);
+	s->size_a = size;
+	while (--size >= 0)
 	{
-		if (!valid_int(argv[argc], "2147483647"))
-			error_handler(s, 3);
-		s->stack_a[argc] = ft_atoi(argv[argc]);
-		if (already_in(s->stack_a[argc], argc, s))
-			error_handler(s, 3);
+		if (!valid_int(args[size], "2147483647"))
+			return (0);
+		s->stack_a[size] = ft_atoi(args[size]);
+		if (already_in(s->stack_a[size], size, s))
+			return (0);
 	}
+}
+
+char	split_format_input(t_stacks *s, char *arg1)
+{
+	unsigned int	i;
+	char			**split_tab;
+
+	split_tab = ft_split(arg1, WHITE_SPACES);
+	if (!split_tab)
+		return (0);
+	i = 0;
+	while (split_tab[i] != NULL)
+		i++;
+	if (!format_input(s, i, split_tab))
+	{
+		i = 0;
+		while (split_tab[i] != NULL)
+			free(split_tab[i++]);
+		free(split_tab);
+		return (0);
+	}
+	i = 0;
+	while (split_tab[i] != NULL)
+		free(split_tab[i++]);
+	free(split_tab);
+	return (1);
 }
