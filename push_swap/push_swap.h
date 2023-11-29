@@ -6,29 +6,55 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:59:52 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/28 14:02:48 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/29 19:01:12 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
-# include <stdlib.h>
-# include <unistd.h>
-# define WHITE_SPACES	"\009\010\011\012\013\032"
+# include "libft/libft.h"
 
+# define WHITE_SPACES	"\032\009\010\011\012\013"
 
-typedef struct s_satcks
+# define S_A		"sa"
+# define S_B		"sb"
+# define S_BOTH		"ss"
+
+# define P_A		"pa"
+# define P_B		"pb"
+
+# define R_A		"ra"
+# define R_B		"rb"
+# define R_BOTH		"rr"
+
+# define RR_A		"rra"
+# define RR_B		"rrb"
+# define RR_BOTH	"rrr"
+
+typedef struct s_intlist
 {
-	int				*stack_a;
-	unsigned int	size_a;
-	unsigned int	top_a;
-	int				*stack_b;
-	unsigned int	size_b;
-	unsigned int	top_b;
+	int					elem;
+	struct s_intlist	*next;
+}	t_intlist;
+
+typedef struct s_statcks
+{
+	struct s_intlist	*stack_a;
+	unsigned int		len_a;
+	struct s_intlist	*stack_b;
+	unsigned int		len_b;
 }	t_stacks;
 
+void	bubble_sort(t_stacks *s);
 
-char	format_input(t_satcks *s, unsigned int size, char **args);
-char	split_format_input(t_satcks *s, char *arg1);
+void	push(t_stacks *s, const char *txt);
+void	swap(t_stacks *s, const char *txt);
+void	rotate(t_stacks *s, const char *txt);
+void	reverse_rotate(t_stacks *s, const char *txt);
+
+char	receive_inputs_a(t_stacks *s, unsigned int size, char **args);
+char	receive_inputs_b(t_stacks *s, char *arg1);
+
+void	error_handler(t_stacks *s);
 
 #endif

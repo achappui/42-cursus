@@ -3,69 +3,111 @@
 /*                                                        :::      ::::::::   */
 /*   operations.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 13:41:18 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/28 15:10:16 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:22:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	push(t_stacks *s, char which)
+void	push(t_stacks *s, const char *txt)
 {
-	int				tmp1;
-	int				tmp2;
-	unsigned int	i;
+	t_intlist	*tmp;
 
-	if (which == 'A' && s->size_a > 0)
+	if (txt[1] == 'a' && s->len_b > 0)
 	{
-		s
-		s->size_a--;
+		tmp = s->stack_a->next;
+		s->stack_a = s->stack_b;
+		s->stack_a->next = tmp;
+		s->stack_b = s->stack_b->next;
+		s->len_a++;
+		s->len_b--;
 	}
-	else if (which == 'B' && s->size_b > 0)
+	else if (txt[1] == 'b' && s->len_a > 0)
 	{
-		
-		s->size_b--;
+		tmp = s->stack_b->next;
+		s->stack_b = s->stack_a;
+		s->stack_b->next = tmp;
+		s->stack_a = s->stack_a->next;
+		s->len_b++;
+		s->len_a--;
 	}
-	while (i < s->size_a)
-	{
-		tmp2 = s->size_a[i];
-		s->size_a[i] = tmp1;
-		i++;
-	}
+	if (write(2, txt, 2) <= 0)
+		error_handler(s);
 }
 
-void	swap(t_stacks *s, char which)
+void	swap(t_stacks *s, const char *txt)
 {
-	int	tmp;
+	t_intlist	*tmp;
 
-	if (which != 'B' && s->size_a > 1)
+	if (txt[1] != 'b' && s->len_a > 1)
 	{
-		tmp = s->stack_a[s->top_a];
-		s->stack_a[s->top_a] = s->stack_a[(s->top_a + s->size_a - 1) % s->size_a];
-		s->stack_a[(s->top_a + s->size_a - 1) % s->size_a] = tmp;
+		tmp = s->stack_a;
+		s->stack_a = s->stack_a->next;
+		tmp->next = s->stack_a->next;
+		s->stack_a->next = tmp;
 	}
-	if (which != 'A' && s->size_b > 1)
+	if (txt[1] != 'a' && s->len_b > 1)
 	{
-		tmp = s->stack_b[s->top_b];
-		s->stack_b[s->top_b] = s->stack_b[(s->top_b + s->size_b - 1) % s->size_b];
-		s->stack_b[(s->top_b + s->size_b - 1) % s->size_b] = tmp;
+		tmp = s->stack_b;
+		s->stack_b = s->stack_b->next;
+		tmp->next = s->stack_b->next;
+		s->stack_b->next = tmp;
 	}
+	if (write(2, txt, 2) <= 0)
+		error_handler(s);
 }
 
-void	rotate(t_stacks *s, char which)
+void	rotate(t_stacks *s, const char *txt)
 {
-	if (which != 'B')
-		s->top_a = (s->top_a + s->size_a - 1) % s->size_a;
-	if (which != 'A')
-		s->top_b = (s->top_b + s->size_b - 1) % s->size_b;
+	t_intlist	*last;
+
+	if (txt[1] != 'b' && s->len_a > 1)
+	{
+		last = s->stack_a;
+		while (last->next)
+			last = last->next;
+		last->next = s->stack_a;
+		s->stack_a = s->stack_a->next;
+		last->next->next = NULL;
+	}
+	if (txt[1] != 'a' && s->len_b > 1)
+	{
+		last = s->stack_b;
+		while (last->next)
+			last = last->next;
+		last->next = s->stack_b;
+		s->stack_b = s->stack_b->next;
+		last->next->next = NULL;
+	}
+	if (write(2, txt, 2) <= 0)
+		error_handler(s);
 }
 
-void	reverse_rotate(t_stacks *s, char which)
+void	reverse_rotate(t_stacks *s, const char *txt)
 {
-	if (which != 'B')
-		s->top_a = (s->top_a + s->size_a + 1) % s->size_a;
-	if (which != 'A')
-		s->top_b = (s->top_b + s->size_b + 1) % s->size_b;
+	t_intlist	**last;
+
+	if (txt[2] != 'b' && s->len_a > 1)
+	{
+		*last = s->stack_a;
+		while ((*last)->next)
+			last = &(*last)->next;
+		(*last)->next = s->stack_a;
+		s->stack_a = *last;
+		*last = NULL;
+	}
+	if (txt[2] != 'a' && s->len_b > 1)
+	{
+		*last = s->stack_b;
+		while ((*last)->next)
+			last = &(*last)->next;
+		(*last)->next = s->stack_b;
+		s->stack_b = *last;
+		*last = NULL;
+	}
+	if (write(2, txt, 3) <= 0)
+		error_handler(s);
 }
