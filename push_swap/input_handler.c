@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:58:59 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/29 19:03:51 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/30 11:24:57 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static char	valid_int(const char *str)
 
 	int_max = "2147483647";
 	sign = '+';
-	if (*str == '+' || (uintptr_t)str == '-')
+	if (*str == '+' || *str == '-')
 		sign = *str++;
-	while (*str == '0' && (uintptr_t)*(str + 1) != '\0')
+	while (*str == '0' && *(str + 1) != '\0')
 		str++;
 	len = -1;
 	while (str[++len] != '\0')
@@ -59,10 +59,16 @@ char	receive_inputs_a(t_stacks *s, unsigned int size, char **args)
 
 	tmp = NULL;
 	s->len_a = 0;
-	while (--size >= 0)
+	//printf("Size %u\n", size);
+	while (size > 0)
 	{
+		size--;
+		printf("INDEX: %u\n", size);
 		if (!valid_int(args[size]))
+		{
+			printf("NOT VALID");
 			return (0);
+		}
 		new_elem = (t_intlist *)malloc(sizeof(t_intlist));
 		if (!new_elem)
 			return (0);
@@ -72,6 +78,7 @@ char	receive_inputs_a(t_stacks *s, unsigned int size, char **args)
 		if (already_in(tmp->next, tmp->elem))
 			return (0);
 		s->len_a++;
+
 	}
 	s->stack_a = new_elem;
 	s->len_b = 0;
@@ -81,27 +88,28 @@ char	receive_inputs_a(t_stacks *s, unsigned int size, char **args)
 
 char	receive_inputs_b(t_stacks *s, char *arg1)
 {
-	unsigned int	i;
+	char			return_value;
 	char			**split_tab;
+	unsigned int	i;
 
 	split_tab = ft_split(arg1, WHITE_SPACES);
 	//printf(" %c %c %c", split_tab[0][0], split_tab[1][0], split_tab[2][0]);
 	if (!split_tab)
-	{
-		printf("yoo");
 		return (0);
-	}
 	i = 0;
 	while (split_tab[i] != NULL)
+	{
+		//printf("Elem: %d, %s\n", i, split_tab[i]);
 		i++;
-	arg1 = (char *)(0 * (uintptr_t)arg1 + receive_inputs_a(s, i, split_tab));
+	}
+	//printf("size %d\n", i);
+	return_value = receive_inputs_a(s, i, split_tab);
 	i = 0;
-	printf("yoo");
 	while (split_tab[i] != NULL)
 	{
 		//printf("I %d et test %c\n", i, split_tab[i][0]);
 		free(split_tab[i++]);
 	}
 	free(split_tab);
-	return ((uintptr_t)arg1);
+	return (return_value);
 }

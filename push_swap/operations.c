@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 13:41:18 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/28 19:22:43 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/30 11:49:23 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	push(t_stacks *s, const char *txt)
 		s->len_b++;
 		s->len_a--;
 	}
-	if (write(2, txt, 2) <= 0)
+	if (write(2, txt, 3) <= 0)
 		error_handler(s);
 }
 
@@ -56,7 +56,7 @@ void	swap(t_stacks *s, const char *txt)
 		tmp->next = s->stack_b->next;
 		s->stack_b->next = tmp;
 	}
-	if (write(2, txt, 2) <= 0)
+	if (write(2, txt, 3) <= 0)
 		error_handler(s);
 }
 
@@ -82,7 +82,7 @@ void	rotate(t_stacks *s, const char *txt)
 		s->stack_b = s->stack_b->next;
 		last->next->next = NULL;
 	}
-	if (write(2, txt, 2) <= 0)
+	if (write(2, txt, 3) <= 0)
 		error_handler(s);
 }
 
@@ -108,6 +108,6 @@ void	reverse_rotate(t_stacks *s, const char *txt)
 		s->stack_b = *last;
 		*last = NULL;
 	}
-	if (write(2, txt, 3) <= 0)
+	if (write(2, txt, 4) <= 0)
 		error_handler(s);
 }

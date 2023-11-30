@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:59:52 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/29 19:01:12 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/30 11:48:49 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,22 @@
 # define PUSH_SWAP_H
 # include "libft/libft.h"
 
-# define WHITE_SPACES	"\032\009\010\011\012\013"
+# define WHITE_SPACES " \t\n\v\f\r"
 
-# define S_A		"sa"
-# define S_B		"sb"
-# define S_BOTH		"ss"
+# define S_A		"sa\n"
+# define S_B		"sb\n"
+# define S_BOTH		"ss\n"
 
-# define P_A		"pa"
-# define P_B		"pb"
+# define P_A		"pa\n"
+# define P_B		"pb\n"
 
-# define R_A		"ra"
-# define R_B		"rb"
-# define R_BOTH		"rr"
+# define R_A		"ra\n"
+# define R_B		"rb\n"
+# define R_BOTH		"rr\n"
 
-# define RR_A		"rra"
-# define RR_B		"rrb"
-# define RR_BOTH	"rrr"
+# define RR_A		"rra\n"
+# define RR_B		"rrb\n"
+# define RR_BOTH	"rrr\n"
 
 typedef struct s_intlist
 {

@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 10:27:03 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/29 19:03:20 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/30 10:36:44 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	**ft_split(char const *s, const char *set)
 		while (ft_in_set(set, *s))
 			s++;
 		len = 0;
-		while (s[len] != '\0' || !ft_in_set(set, s[len]))
+		while (s[len] != '\0' && !ft_in_set(set, s[len]))
 			len++;
 		if (len)
 		{

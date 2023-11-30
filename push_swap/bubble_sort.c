@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 18:23:42 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/29 18:33:08 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/30 11:50:38 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ void	bubble_sort(t_stacks *s)
 			if (s->stack_a->elem > s->stack_a->next->elem)
 				swap(s, S_A);
 			rotate(s, R_A);
+			i++;
 		}
 		size--;
 	}
+	//swap(s, S_A);
 }
