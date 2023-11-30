@@ -6,11 +6,25 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:58:59 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/30 11:24:57 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/30 18:50:04 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+static char	free_split(char **split)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (split[i] != NULL)
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
+	return (1);
+}
 
 static char	valid_int(const char *str)
 {
@@ -41,75 +55,56 @@ static char	valid_int(const char *str)
 	return (1);
 }
 
-static char	already_in(t_intlist *lst, int number)
+static char	already_in(int *stack, unsigned int index, int integer)
 {
-	while (lst)
-	{
-		if (lst->elem == number)
+	while (index > 0)
+		if (stack[--index] == integer)
 			return (1);
-		lst = lst->next;
-	}
 	return (0);
 }
 
-char	receive_inputs_a(t_stacks *s, unsigned int size, char **args)
+static char	fill_stack_a(t_stacks *s, unsigned int size, char **args)
 {
-	t_intlist	*tmp;
-	t_intlist	*new_elem;
+	unsigned int	i;
 
-	tmp = NULL;
-	s->len_a = 0;
-	//printf("Size %u\n", size);
-	while (size > 0)
+	i = 0;
+	while (i < size)
 	{
-		size--;
-		printf("INDEX: %u\n", size);
-		if (!valid_int(args[size]))
-		{
-			printf("NOT VALID");
+		if (!valid_int(args[i]))
 			return (0);
-		}
-		new_elem = (t_intlist *)malloc(sizeof(t_intlist));
-		if (!new_elem)
+		s->ptr_a[i] = ft_atoi(args[i]);
+		if (already_in(s->ptr_a, i, s->ptr_a[i]))
 			return (0);
-		new_elem->elem = ft_atoi(args[size]);
-		new_elem->next = tmp;
-		tmp = new_elem;
-		if (already_in(tmp->next, tmp->elem))
-			return (0);
-		s->len_a++;
-
+		i++;
 	}
-	s->stack_a = new_elem;
-	s->len_b = 0;
-	s->stack_b = NULL;
 	return (1);
 }
 
-char	receive_inputs_b(t_stacks *s, char *arg1)
+char	init_inputs(t_stacks *s, unsigned int size, char **args, char split)
 {
-	char			return_value;
-	char			**split_tab;
-	unsigned int	i;
-
-	split_tab = ft_split(arg1, WHITE_SPACES);
-	//printf(" %c %c %c", split_tab[0][0], split_tab[1][0], split_tab[2][0]);
-	if (!split_tab)
+	if (split)
+	{
+		args = ft_split(args[1], WHITE_SPACES);
+		if (!args)
+			return (0);
+		while (args[size] != NULL)
+			size++;
+	}
+	s->ptr_a = NULL;
+	s->ptr_b = NULL;
+	s->ptr_a = (int *)malloc((size + 1) * sizeof(int));
+	if (!s->ptr_a)
 		return (0);
-	i = 0;
-	while (split_tab[i] != NULL)
-	{
-		//printf("Elem: %d, %s\n", i, split_tab[i]);
-		i++;
-	}
-	//printf("size %d\n", i);
-	return_value = receive_inputs_a(s, i, split_tab);
-	i = 0;
-	while (split_tab[i] != NULL)
-	{
-		//printf("I %d et test %c\n", i, split_tab[i][0]);
-		free(split_tab[i++]);
-	}
-	free(split_tab);
-	return (return_value);
+	s->ptr_b = (int *)malloc((size + 1) * sizeof(int));
+	if (!s->ptr_b)
+		return (0);
+	s->size = size + 1;
+	s->h_a = 0;
+	s->h_b = 0;
+	s->t_a = size - 1;
+	s->t_b = 0;
+	if (split)
+		return (fill_stack_a(s, size, args) && free_split(args));
+	return (fill_stack_a(s, size, args));
 }
+

@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:59:52 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/30 11:48:49 by achappui         ###   ########.fr       */
+/*   Updated: 2023/11/30 19:31:59 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,33 +16,30 @@
 
 # define WHITE_SPACES " \t\n\v\f\r"
 
-# define S_A		"sa\n"
-# define S_B		"sb\n"
-# define S_BOTH		"ss\n"
+# define SA		"sa\n"
+# define SB		"sb\n"
+# define SS		"ss\n"
 
-# define P_A		"pa\n"
-# define P_B		"pb\n"
+# define PA		"pa\n"
+# define PB		"pb\n"
 
-# define R_A		"ra\n"
-# define R_B		"rb\n"
-# define R_BOTH		"rr\n"
+# define RA		"ra\n"
+# define RB		"rb\n"
+# define RR		"rr\n"
 
-# define RR_A		"rra\n"
-# define RR_B		"rrb\n"
-# define RR_BOTH	"rrr\n"
-
-typedef struct s_intlist
-{
-	int					elem;
-	struct s_intlist	*next;
-}	t_intlist;
+# define RRA	"rra\n"
+# define RRB	"rrb\n"
+# define RRR	"rrr\n"
 
 typedef struct s_statcks
 {
-	struct s_intlist	*stack_a;
-	unsigned int		len_a;
-	struct s_intlist	*stack_b;
-	unsigned int		len_b;
+	unsigned int	size;
+	int				*ptr_a;
+	unsigned int	h_a;
+	unsigned int	t_a;
+	int				*ptr_b;
+	unsigned int	h_b;
+	unsigned int	t_b;
 }	t_stacks;
 
 void	bubble_sort(t_stacks *s);
@@ -52,8 +49,7 @@ void	swap(t_stacks *s, const char *txt);
 void	rotate(t_stacks *s, const char *txt);
 void	reverse_rotate(t_stacks *s, const char *txt);
 
-char	receive_inputs_a(t_stacks *s, unsigned int size, char **args);
-char	receive_inputs_b(t_stacks *s, char *arg1);
+char	init_inputs(t_stacks *s, unsigned int size, char **args, char split)
 
 void	error_handler(t_stacks *s);
 
