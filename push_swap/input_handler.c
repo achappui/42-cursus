@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:58:59 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/30 18:50:04 by achappui         ###   ########.fr       */
+/*   Updated: 2023/12/01 10:20:45 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ static char	fill_stack_a(t_stacks *s, unsigned int size, char **args)
 	{
 		if (!valid_int(args[i]))
 			return (0);
-		s->ptr_a[i] = ft_atoi(args[i]);
-		if (already_in(s->ptr_a, i, s->ptr_a[i]))
+		s->stack_a[i] = ft_atoi(args[i]);
+		if (already_in(s->stack_a, i, s->stack_a[i]))
 			return (0);
 		i++;
 	}
@@ -90,19 +90,19 @@ char	init_inputs(t_stacks *s, unsigned int size, char **args, char split)
 		while (args[size] != NULL)
 			size++;
 	}
-	s->ptr_a = NULL;
-	s->ptr_b = NULL;
-	s->ptr_a = (int *)malloc((size + 1) * sizeof(int));
-	if (!s->ptr_a)
+	s->stack_a = NULL;
+	s->stack_b = NULL;
+	s->stack_a = (int *)malloc((size + 1) * sizeof(int));
+	if (!s->stack_a)
 		return (0);
-	s->ptr_b = (int *)malloc((size + 1) * sizeof(int));
-	if (!s->ptr_b)
+	s->stack_b = (int *)malloc((size + 1) * sizeof(int));
+	if (!s->stack_b)
 		return (0);
-	s->size = size + 1;
-	s->h_a = 0;
-	s->h_b = 0;
-	s->t_a = size - 1;
-	s->t_b = 0;
+	s->buff_size = size + 1;
+	s->top_a = 0;
+	s->top_b = 0;
+	s->size_a = size;
+	s->size_b = 0;
 	if (split)
 		return (fill_stack_a(s, size, args) && free_split(args));
 	return (fill_stack_a(s, size, args));

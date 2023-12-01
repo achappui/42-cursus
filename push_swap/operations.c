@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 13:41:18 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/30 19:31:56 by achappui         ###   ########.fr       */
+/*   Updated: 2023/12/01 10:55:32 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,21 @@
 
 void	push(t_stacks *s, const char *txt)
 {
-	t_intlist	*tmp;
-
-	if (txt[1] == 'a' && s->h_a != s->t_a)
+	if (txt[1] == 'a' && s->size_a > 0)
 	{
-
+		s->top_b = (s->top_b + s->buff_size - 1) % s->buff_size;
+		s->stack_b[s->top_b] = s->stack_a[s->top_a];
+		s->top_a = (s->top_a + 1) % s->buff_size;
+		s->size_a--;
+		s->size_b++;
 	}
-	else if (txt[1] == 'b' && s->len_a > 0)
+	else if (txt[1] == 'b' && s->size_b > 0)
 	{
-
+		s->top_b = (s->top_b + s->buff_size - 1) % s->buff_size;
+		s->stack_b[s->top_b] = s->stack_a[s->top_a];
+		s->top_a = (s->top_a + 1) % s->buff_size;
+		s->size_a--;
+		s->size_b++;
 	}
 	if (write(2, txt, 3) <= 0)
 		error_handler(s);
@@ -30,15 +36,19 @@ void	push(t_stacks *s, const char *txt)
 
 void	swap(t_stacks *s, const char *txt)
 {
-	t_intlist	*tmp;
+	int	tmp;
 
-	if (txt[1] != 'b' && s->len_a > 1)
+	if (txt[1] != 'b' && s->size_a > 1)
 	{
-
+		tmp = s->stack_a[s->top_a];
+		s->stack_a[s->top_a] = s->stack_a[(s->top_a + 1) % s->buff_size];
+		s->stack_a[(s->top_a + 1) % s->buff_size] = tmp;
 	}
-	if (txt[1] != 'a' && s->len_b > 1)
+	if (txt[1] != 'a' && s->size_b > 1)
 	{
-
+		tmp = s->stack_b[s->top_b];
+		s->stack_b[s->top_b] = s->stack_b[(s->top_b + 1) % s->buff_size];
+		s->stack_b[(s->top_b + 1) % s->buff_size] = tmp;
 	}
 	if (write(2, txt, 3) <= 0)
 		error_handler(s);
@@ -46,15 +56,17 @@ void	swap(t_stacks *s, const char *txt)
 
 void	rotate(t_stacks *s, const char *txt)
 {
-	t_intlist	*last;
-
-	if (txt[1] != 'b' && s->len_a > 1)
+	if (txt[1] != 'b' && s->size_a > 1)
 	{
-
+		s->stack_a[(s->top_a + s->size_a) % s->buff_size] = \
+		s->stack_a[s->top_a];
+		s->top_a = (s->top_a + 1) % s->buff_size;
 	}
-	if (txt[1] != 'a' && s->len_b > 1)
+	if (txt[1] != 'a' && s->size_b > 1)
 	{
-
+		s->stack_b[(s->top_b + s->size_b) % s->buff_size] = \
+		s->stack_b[s->top_b];
+		s->top_b = (s->top_b + 1) % s->buff_size;
 	}
 	if (write(2, txt, 3) <= 0)
 		error_handler(s);
@@ -62,15 +74,17 @@ void	rotate(t_stacks *s, const char *txt)
 
 void	reverse_rotate(t_stacks *s, const char *txt)
 {
-	t_intlist	**last;
-
-	if (txt[2] != 'b' && s->len_a > 1)
+	if (txt[1] != 'b' && s->size_a > 1)
 	{
-
+		s->stack_a[(s->top_a + s->buff_size - 1) % s->buff_size] = \
+		s->stack_a[(s->top_a + s->size_a - 1) % s->buff_size];
+		s->top_a = (s->top_a + s->buff_size - 1) % s->buff_size;
 	}
-	if (txt[2] != 'a' && s->len_b > 1)
+	if (txt[1] != 'a' && s->size_b > 1)
 	{
-
+		s->stack_b[(s->top_b + s->buff_size - 1) % s->buff_size] = \
+		s->stack_b[(s->top_b + s->size_b - 1) % s->buff_size];
+		s->top_b = (s->top_b + s->buff_size - 1) % s->buff_size;
 	}
 	if (write(2, txt, 4) <= 0)
 		error_handler(s);
