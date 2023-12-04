@@ -6,53 +6,41 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:59:52 by achappui          #+#    #+#             */
-/*   Updated: 2023/12/01 10:59:25 by achappui         ###   ########.fr       */
+/*   Updated: 2023/12/04 16:46:52 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
-# include "libft/libft.h"
+# include "../libft/libft.h"
 
 # define WHITE_SPACES " \t\n\v\f\r"
 
-//# define test s->top_b //possible ou pas
+# define A		0
+# define B		1
+# define BOTH	2
 
-# define SA		"sa\n"
-# define SB		"sb\n"
-# define SS		"ss\n"
-
-# define PA		"pa\n"
-# define PB		"pb\n"
-
-# define RA		"ra\n"
-# define RB		"rb\n"
-# define RR		"rr\n"
-
-# define RRA	"rra\n"
-# define RRB	"rrb\n"
-# define RRR	"rrr\n"
-
-typedef struct s_stacks
+typedef struct	s_stack
 {
-	unsigned int	buff_size;
-	int				*stack_a;
-	unsigned int	top_a;
-	unsigned int	size_a;
-	int				*stack_b;
-	unsigned int	top_b;
-	unsigned int	size_b;
-}	t_stacks;
+	int				*stack;
+	unsigned int	mem_size;
+	unsigned int	top;
+	unsigned int	size;
+}	t_stack;
 
-void	bubble_sort(t_stacks *s);
+typedef struct	s_push_swap
+{
+	struct s_stack	a;
+	struct s_stack	b;
+}	t_push_swap;
 
-void	push(t_stacks *s, const char *txt);
-void	swap(t_stacks *s, const char *txt);
-void	rotate(t_stacks *s, const char *txt);
-void	reverse_rotate(t_stacks *s, const char *txt);
+void	build_stack_a_and_b(t_push_swap *ps, unsigned int size, char **args, char split);
 
-char	init_inputs(t_stacks *s, unsigned int size, char **args, char split);
+void	push(t_push_swap *ps, char which);
+void	swap(t_push_swap *ps, char which);
+void	rotate(t_push_swap *ps, char which);
+void	reverse_rotate(t_push_swap *ps, char which);
 
-void	error_handler(t_stacks *s);
+void	error_handler(t_push_swap *ps);
 
 #endif
