@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 16:21:23 by achappui          #+#    #+#             */
-/*   Updated: 2023/12/12 09:41:21 by achappui         ###   ########.fr       */
+/*   Updated: 2023/12/12 12:23:47 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ int	main(int argc, char **argv)
 	print_stack(&ps.b);
 	//insertion_sort(&ps, ps.a.size);
 	//smallest_sort(&ps);
-	bubble_sort(&ps);
+	//bubble_sort(&ps);
+	smallest_sort_opti_reverse(&ps);
 	printf("STACK A: ");
 	print_stack(&ps.a);
 	printf("STACK B: ");

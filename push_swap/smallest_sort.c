@@ -58,3 +58,40 @@ void	smallest_sort(t_push_swap *ps)
 	}
 	printf("NUMBER OF INSTRUCTIONS: %lu\n", instruction_counter);
 }
+
+void	smallest_sort_opti_reverse(t_push_swap *ps)
+{
+	unsigned int	smallest_index;
+	size_t			instruction_counter;
+
+	while (ps->a.size > 0)
+	{
+		smallest_index = get_smallest_index(&ps->a, ps->a.top);
+		printf("smallest index: %u\n", smallest_index);
+		if (smallest_index > ps->a.size / 2)
+		{
+			smallest_index = ps->a.size - smallest_index;
+			while (smallest_index-- > 0)
+			{
+				reverse_rotate(ps, A);
+				instruction_counter++;
+			}
+		}
+		else
+		{
+			while (smallest_index-- > 0)
+			{
+				rotate(ps, A);
+				instruction_counter++;
+			}
+		}
+		push(ps, B);
+		instruction_counter++;
+	}
+	while (ps->b.size > 0)
+	{
+		push(ps, A);
+		instruction_counter++;
+	}
+	printf("NUMBER OF INSTRUCTIONS: %lu\n", instruction_counter);
+}

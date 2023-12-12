@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:59:52 by achappui          #+#    #+#             */
-/*   Updated: 2023/12/12 09:41:07 by achappui         ###   ########.fr       */
+/*   Updated: 2023/12/12 12:22:28 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct	s_push_swap
 void	insertion_sort(t_push_swap *ps, unsigned int nb_of_elems);
 void	bubble_sort(t_push_swap *ps);
 void	smallest_sort(t_push_swap *ps);
+void	smallest_sort_opti_reverse(t_push_swap *ps);
 
 void	build_stack_a_and_b(t_push_swap *ps, unsigned int size, char **args, char split);
 void	push(t_push_swap *ps, char which);
