@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:59:52 by achappui          #+#    #+#             */
-/*   Updated: 2023/12/04 17:13:32 by achappui         ###   ########.fr       */
+/*   Updated: 2023/12/04 19:02:32 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 
 # define WHITE_SPACES " \t\n\v\f\r"
 
-# define A		0
-# define B		1
-# define BOTH	2
+# define A		'a'
+# define B		'b'
+# define BOTH	'c'
 
 typedef struct	s_stack
 {

@@ -1,4 +1,4 @@
-SRC		=	main.c input_handler.c operations.c
+SRC		=	main.c input_handler.c operations.c insertion_sort.c smallest_sort.c bubble_sort.c
 OBJ		=	$(SRC:%.c=%.o)
 NAME	=	push_swap
 CFLAGS	=	-Wall -Wextra -Werror

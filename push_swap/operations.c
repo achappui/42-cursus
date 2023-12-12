@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 13:41:18 by achappui          #+#    #+#             */
-/*   Updated: 2023/12/04 16:39:27 by achappui         ###   ########.fr       */
+/*   Updated: 2023/12/05 10:04:34 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	swap(t_push_swap *ps, char which)
 	char	txt[3];
 
 	txt[0] = 's';
-	txt[1] = (which == A) * 'a' + (which == B) * 'b' + (which == BOTH) * 's';
+	txt[1] = (which == A) * 'a' + (which == B) * 'b' + (which > 'b') * 's';
 	txt[2] = '\n';
 	if (which != B && ps->a.size > 1)
 	{
@@ -68,7 +68,7 @@ void	rotate(t_push_swap *ps, char which)
 	char	txt[3];
 
 	txt[0] = 'r';
-	txt[1] = (which == A) * 'a' + (which == B) * 'b' + (which == BOTH) * 'r';
+	txt[1] = (which == A) * 'a' + (which == B) * 'b' + (which > 'b') * 'r';
 	txt[2] = '\n';
 	if (which != B && ps->a.size > 1)
 	{
@@ -92,7 +92,7 @@ void	reverse_rotate(t_push_swap *ps, char which)
 
 	txt[0] = 'r';
 	txt[1] = 'r';
-	txt[2] = (which == A) * 'a' + (which == B) * 'b' + (which == BOTH) * 'r';
+	txt[2] = (which == A) * 'a' + (which == B) * 'b' + (which > 'b') * 'r';
 	txt[3] = '\n';
 	if (which != B && ps->a.size > 1)
 	{

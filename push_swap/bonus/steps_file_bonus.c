@@ -27,14 +27,22 @@ static char	valid_line(char *l)
 
 void	run_steps(t_checker *c)
 {
-	t_list	*step;
+	t_list	*lst;
+	char	*step;
 
-	step = c->steps;
-	while (step)
+	lst = c->steps;
+	while (lst && lst->content) //a verifier normalement c'est bon
 	{
-		step->content
-
-		step = step->next;
+		step = (char *)lst->content;
+		if (step[0] == 'p')
+			push(c, step[1]);
+		else if (step[0] == 's')
+			swap(c, step[1]);
+		else if (step[0] == 'r' && (step[2] == '\n' || step[2] == '\0'))
+			rotate(c, step[1]);
+		else
+			reverse_rotate(c, step[2])
+		lst = lst->next;
 	}
 }
 
