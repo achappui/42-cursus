@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:59:52 by achappui          #+#    #+#             */
-/*   Updated: 2023/12/21 23:32:36 by achappui         ###   ########.fr       */
+/*   Updated: 2023/12/22 00:02:31 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,6 @@
 # define A						'a'
 # define B						'b'
 # define BOTH					'c'
-# define READ_SIZE				1000
-# define I_BUFF_SIZE			1000
-
-typedef struct s_instruction_block
-{
-	short						buffer[I_BUFF_SIZE];
-	struct s_instruction_block	*next;
-}	t_instruction_block;
 
 typedef struct s_stack
 {
@@ -45,7 +37,6 @@ void	push(t_push_swap *ps, char which);
 void	swap(t_push_swap *ps, char which);
 void	rotate(t_push_swap *ps, char which);
 void	reverse_rotate(t_push_swap *ps, char which);
-void	check_and_get_steps(t_push_swap *ps);
 void	run_steps(t_push_swap *ps);
 void	error_handler(t_push_swap *ps);
 void	build_stack_a_and_b(t_push_swap *ps, unsigned int size, \
