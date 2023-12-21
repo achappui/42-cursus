@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 13:51:34 by achappui          #+#    #+#             */
-/*   Updated: 2023/12/21 22:15:13 by achappui         ###   ########.fr       */
+/*   Updated: 2023/12/21 23:31:16 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,45 +65,24 @@ static void	pepare_move(unsigned int *arr)
 	}
 }
 
-static size_t	execute_move(t_push_swap *ps, unsigned int *cmd_arr)
+static void	execute_move(t_push_swap *ps, unsigned int *cmd_arr)
 {
-	size_t	instruction_counter;
-
-	instruction_counter = 0;
 	while (cmd_arr[RA] && cmd_arr[RB] && cmd_arr[RA]-- && cmd_arr[RB]--)
-	{
 		rotate(ps, BOTH);
-		instruction_counter++;
-	}
 	while (cmd_arr[RA] && cmd_arr[RA]--)
-	{
 		rotate(ps, A);
-		instruction_counter++;
-	}
 	while (cmd_arr[RB] && cmd_arr[RB]--)
-	{
 		rotate(ps, B);
-		instruction_counter++;
-	}
 	while (cmd_arr[RRA] && cmd_arr[RRB] && cmd_arr[RRA]-- && cmd_arr[RRB]--)
-	{
 		reverse_rotate(ps, BOTH);
-		instruction_counter++;
-	}
 	while (cmd_arr[RRA] && cmd_arr[RRA]--)
-	{
 		reverse_rotate(ps, A);
-		instruction_counter++;
-	}
 	while (cmd_arr[RRB] && cmd_arr[RRB]--)
-	{
 		reverse_rotate(ps, B);
-		instruction_counter++;
-	}
-	return (instruction_counter);
 }
 
-static void	calcul_elem_moves(t_push_swap *ps, unsigned int *arr, unsigned int i, int elem)
+static void	calcul_elem_moves(t_push_swap *ps, unsigned int *arr, \
+								unsigned int i, int elem)
 {
 	unsigned int	j;
 	unsigned int	current;
@@ -120,7 +99,7 @@ static void	calcul_elem_moves(t_push_swap *ps, unsigned int *arr, unsigned int i
 				break ;
 		}
 		else if (ps->a.stack[prev] < elem && ps->a.stack[current] > elem)
-				break ;
+			break ;
 		current = prev;
 		j++;
 	}
@@ -136,12 +115,8 @@ void	sorting_algo(t_push_swap *ps)
 	unsigned int	top;
 	unsigned int	opti_elem[6];
 	unsigned int	tmp_elem[6];
-	size_t			instruction_counter;
 
-	instruction_counter = 0;
-	replace_by_index(ps);
-	instruction_counter += midpoint_chunker(ps);
-	instruction_counter += sort_only_three_a(ps);
+	midpoint_chunker(ps);
 	while (ps->b.size > 0)
 	{
 		i = 0;
@@ -149,29 +124,15 @@ void	sorting_algo(t_push_swap *ps)
 		top = ps->b.top;
 		while (i < ps->b.size)
 		{
-			calcul_elem_moves(ps, tmp_elem, i, ps->b.stack[top]);
+			calcul_elem_moves(ps, tmp_elem, i++, ps->b.stack[top]);
 			choose_best_move(tmp_elem);
 			if (tmp_elem[MIN_OP] < opti_elem[MIN_OP])
 				ft_memcpy(opti_elem, tmp_elem, 6 * sizeof(int));
 			top = (top + 1) % ps->b.mem_size;
-			i++;
 		}
 		pepare_move(opti_elem);
-		instruction_counter += execute_move(ps, opti_elem);
+		execute_move(ps, opti_elem);
 		push(ps, A);
-		instruction_counter++;
 	}
-	if ((unsigned int)ps->a.stack[ps->a.top] > (ps->a.size - 1) / 2)
-		while (ps->a.stack[ps->a.top] != 0)
-		{
-			rotate(ps, A);
-			instruction_counter++;
-		}
-	else
-		while (ps->a.stack[ps->a.top] != 0)
-		{
-			reverse_rotate(ps, A);
-			instruction_counter++;
-		}
-	//printf("%lu", instruction_counter);
+	rotate_to_sorted(ps);
 }

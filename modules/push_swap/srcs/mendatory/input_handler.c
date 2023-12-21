@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_handler_bonus.c                              :+:      :+:    :+:   */
+/*   input_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:58:59 by achappui          #+#    #+#             */
-/*   Updated: 2023/12/21 22:34:36 by achappui         ###   ########.fr       */
+/*   Updated: 2023/12/21 23:46:15 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap_bonus.h"
+#include "push_swap.h"
 
 static char	valid_int(const char *str)
 {
@@ -72,7 +72,8 @@ static char	make_stacks(t_push_swap *ps, unsigned int size, char **args)
 	return (1);
 }
 
-void	build_stack_a_and_b(t_push_swap *ps, unsigned int size, char **args, char split)
+void	build_stack_a_and_b(t_push_swap *ps, unsigned int size, \
+							char **args, char split)
 {
 	char	ok;
 
@@ -97,7 +98,6 @@ void	build_stack_a_and_b(t_push_swap *ps, unsigned int size, char **args, char s
 			free(args[size++]);
 		free(args);
 	}
-	if (size && !ok)
+	if (!size || !ok)
 		error_handler(ps);
 }
-

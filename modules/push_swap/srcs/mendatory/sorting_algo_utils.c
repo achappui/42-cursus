@@ -12,47 +12,41 @@
 
 #include "push_swap.h"
 
-size_t	sort_only_three_a(t_push_swap *ps)
+void	rotate_to_sorted(t_push_swap *ps)
 {
-	size_t	instruction_counter;
-	int	a;
-	int	b;
-	int	c;
+	if ((unsigned int)ps->a.stack[ps->a.top] > (ps->a.size - 1) / 2)
+		while (ps->a.stack[ps->a.top] != 0)
+			rotate(ps, A);
+	else
+		while (ps->a.stack[ps->a.top] != 0)
+			reverse_rotate(ps, A);
+}
 
-	instruction_counter = 0;
+void	sort_only_three_a(t_push_swap *ps)
+{
+	int		a;
+	int		b;
+	int		c;
+
 	a = ps->a.stack[ps->a.top];
 	b = ps->a.stack[(ps->a.top + 1) % ps->a.mem_size];
 	c = ps->a.stack[(ps->a.top + 2) % ps->a.mem_size];
 	if (b < c && a > c)
-	{
 		rotate(ps, A);
-		instruction_counter++;
-	}
 	else if (c < a && b > a)
-	{
 		reverse_rotate(ps, A);
-		instruction_counter++;
-	}
 	else if (a > b && b > c)
 	{
 		swap(ps, A);
-		instruction_counter++;
 		reverse_rotate(ps, A);
-		instruction_counter++;
 	}
 	else if (a < c && b > c)
 	{
 		swap(ps, A);
-		instruction_counter++;
 		rotate(ps, A);
-		instruction_counter++;
 	}
 	else if (b < a && c > a)
-	{
 		swap(ps, A);
-		instruction_counter++;
-	}
-	return (instruction_counter);
 }
 
 void	replace_by_index(t_push_swap *ps)
@@ -84,27 +78,20 @@ void	replace_by_index(t_push_swap *ps)
 	free(stack_copy);
 }
 
-size_t	midpoint_chunker(t_push_swap *ps)
+void	midpoint_chunker(t_push_swap *ps)
 {
 	unsigned int	pivot;
-	size_t	instruction_counter;
 
-	instruction_counter = 0;
+	replace_by_index(ps);
 	pivot = ps->a.size;
 	while (ps->a.size > 3)
 	{
 		if (ps->a.size <= pivot)
 			pivot = pivot / 2;
 		if ((unsigned int)ps->a.stack[ps->a.top] >= pivot)
-		{
 			push(ps, B);
-			instruction_counter++;
-		}
 		else
-		{
 			rotate(ps, A);
-			instruction_counter++;
-		}
 	}
-	return (instruction_counter);
+	sort_only_three_a(ps);
 }

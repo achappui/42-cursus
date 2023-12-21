@@ -6,13 +6,13 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:59:52 by achappui          #+#    #+#             */
-/*   Updated: 2023/12/21 22:30:46 by achappui         ###   ########.fr       */
+/*   Updated: 2023/12/21 23:32:36 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_BONUS_H
 # define PUSH_SWAP_BONUS_H
-# include "../libft/libft.h"
+# include "../../libs/libft/libft.h"
 
 # define WHITE_SPACES 			" \t\n\v\f\r"
 # define A						'a'
@@ -35,7 +35,7 @@ typedef struct s_stack
 	unsigned int	size;
 }	t_stack;
 
-typedef struct	s_push_swap
+typedef struct s_push_swap
 {
 	struct s_stack	a;
 	struct s_stack	b;
