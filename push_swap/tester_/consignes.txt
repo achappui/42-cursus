@@ -1,5 +1,0 @@
-Faire un programme de test a compiler sur place avec son makefile.
-
-Le programme de test appelle le programme ./push_swap de la cible pour effectuer les verifications
-
-1. Le programme check si les writes et les malloc sont checker,
