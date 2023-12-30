@@ -6,26 +6,97 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 13:29:29 by achappui          #+#    #+#             */
-/*   Updated: 2023/12/28 13:34:33 by achappui         ###   ########.fr       */
+/*   Updated: 2023/12/28 18:14:02 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <signal.h>
-#include <unistd.h>
+#include "server.h"
+
+char	g_sig;
+
+int	receive_clientpid()
+{
+	int				client_pid;
+	unsigned int	mask;
+
+	client_pid = 0;
+	mask = 1 << (sizeof(int) * 8 - 1);
+	//printf("MASK %u:\n", mask);
+	while (mask != 0)
+	{
+		pause();
+		if (g_sig == 1)
+			client_pid |= mask;
+		mask /= 2;
+	}
+	return (client_pid);
+}
+
+size_t	receive_stringlen()
+{
+	size_t	strlen;
+	size_t	mask;
+
+	strlen = 0;
+	mask = 1ULL << (sizeof(size_t) * 8 - 1);
+	while (mask != 0)
+	{
+		pause();
+		if (g_sig == 1)
+			strlen |= mask;
+		mask /= 2;
+		//kill(client_pid, SIGUSR1);
+	}
+	return (strlen);
+}
+
+char	*receive_string(size_t len)
+{
+	char			*str;
+	unsigned char	mask;
+	size_t			i;
+
+	str = (char *)calloc(len + 1, sizeof(char));
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		mask = 1 << 7;
+		while (mask != 0)
+		{
+			pause();
+			if (g_sig == 1)
+				str[i] |= mask;
+			mask /= 2;
+			//kill(client_pid, SIGUSR1);
+		}
+		i++;
+	}
+	return (str);
+}
 
 void handle_sigusr(int sig)
 {
 	if (sig == SIGUSR1)
-    	printf("Ceci est un 1 !\n");
+	{
+		//printf("Bien recu (1)\n");
+		g_sig = 1;
+	}
 	else if (sig == SIGUSR2)
-    	printf("Ceci est un 0 !\n");
+	{
+		//printf("Bien recu (2)\n");
+		g_sig = 2;
+	}
 }
 
 int main()
 {
-    int				pid;
-	struct sigaction sa;
+    int					pid;
+	struct sigaction	sa;
+	int					client_pid;
+	size_t				stringlen;
+	char				*str;
 
 	pid = getpid();
 	sa.sa_handler = &handle_sigusr;
@@ -33,13 +104,16 @@ int main()
     sigaction(SIGUSR2, &sa, NULL);
     printf("PID du serveur : %d\n", pid);
     printf("En attente du signal...\n");
-	while (1)
-	{
-		pause();
-		printf("sending process ID: %d\n", sa.)
-	}
 
-    return 0;
+	client_pid = receive_clientpid();
+	stringlen = receive_stringlen();
+	str = receive_string(stringlen);
+
+	printf("Client_pid: %d\n", client_pid);
+	printf("Stringlen: %lu\n", stringlen);
+	printf("String: %s\n", str);
+	free(str);
+    return (0);
 }
 
 

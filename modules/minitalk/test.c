@@ -7,39 +7,16 @@
 #include <signal.h>
 
 
-/* CELEBS15
 
-   This example adds a set of signals.
 
- */
-#define _POSIX_SOURCE
-#include <stdio.h>
-#include <signal.h>
-#include <unistd.h>
 
-void catcher(int signum) {
-  puts("catcher() has gained control");
-}
 
-main() {
-  struct   sigaction sact;
-  sigset_t sigset;
+int	main()
+{
+	int test = 0b101100011;
 
-  sigemptyset(&sact.sa_mask);
-  sact.sa_flags = 0;
-  sact.sa_handler = catcher;
-  sigaction(SIGUSR1, &sact, NULL);
-
-  puts("before first kill()");
-  kill(getpid(), SIGUSR1);
-  puts("before second kill()");
-
-  sigemptyset(&sigset);
-  sigaddset(&sigset, SIGUSR1);
-  sact.sa_mask = sigset;
-
-  kill(getpid(), SIGUSR1);
-  puts("after second kill()");
+	printf("%d\n", test & 0b001000000);
+	return (0);
 }
 
 // int x = 0;
