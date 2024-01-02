@@ -6,144 +6,89 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 13:29:29 by achappui          #+#    #+#             */
-/*   Updated: 2023/12/28 18:14:02 by achappui         ###   ########.fr       */
+/*   Updated: 2024/01/02 12:52:45 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-char	g_sig;
-
-int	receive_clientpid()
+void	getting_len(int sig, unsigned int *len, char **str, char *state)
 {
-	int				client_pid;
-	unsigned int	mask;
+	static unsigned int	mask1 = 1U << 31U;
 
-	client_pid = 0;
-	mask = 1 << (sizeof(int) * 8 - 1);
-	//printf("MASK %u:\n", mask);
-	while (mask != 0)
-	{
-		pause();
-		if (g_sig == 1)
-			client_pid |= mask;
-		mask /= 2;
-	}
-	return (client_pid);
-}
-
-size_t	receive_stringlen()
-{
-	size_t	strlen;
-	size_t	mask;
-
-	strlen = 0;
-	mask = 1ULL << (sizeof(size_t) * 8 - 1);
-	while (mask != 0)
-	{
-		pause();
-		if (g_sig == 1)
-			strlen |= mask;
-		mask /= 2;
-		//kill(client_pid, SIGUSR1);
-	}
-	return (strlen);
-}
-
-char	*receive_string(size_t len)
-{
-	char			*str;
-	unsigned char	mask;
-	size_t			i;
-
-	str = (char *)calloc(len + 1, sizeof(char));
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		mask = 1 << 7;
-		while (mask != 0)
-		{
-			pause();
-			if (g_sig == 1)
-				str[i] |= mask;
-			mask /= 2;
-			//kill(client_pid, SIGUSR1);
-		}
-		i++;
-	}
-	return (str);
-}
-
-void handle_sigusr(int sig)
-{
 	if (sig == SIGUSR1)
+		*len |= mask1;
+	mask1 /= 2;
+	if (mask1 == 0)
 	{
-		//printf("Bien recu (1)\n");
-		g_sig = 1;
-	}
-	else if (sig == SIGUSR2)
-	{
-		//printf("Bien recu (2)\n");
-		g_sig = 2;
+		mask1 = 1U << 31U;
+		*str = (char *)ft_calloc(*len + 1, sizeof(char));
+		if (!*str)
+			exit(write(2, "[SERVER] MALLOC ERROR !\n", 24));
+		*state = GETTING_STR;
 	}
 }
 
-int main()
+void	getting_str(int sig, unsigned int *len, char **str, char *state)
 {
-    int					pid;
-	struct sigaction	sa;
-	int					client_pid;
-	size_t				stringlen;
-	char				*str;
+	static unsigned char	mask = 1U << 7U;
+	static unsigned int		i = 0;
 
-	pid = getpid();
-	sa.sa_handler = &handle_sigusr;
-    sigaction(SIGUSR1, &sa, NULL);
-    sigaction(SIGUSR2, &sa, NULL);
-    printf("PID du serveur : %d\n", pid);
-    printf("En attente du signal...\n");
-
-	client_pid = receive_clientpid();
-	stringlen = receive_stringlen();
-	str = receive_string(stringlen);
-
-	printf("Client_pid: %d\n", client_pid);
-	printf("Stringlen: %lu\n", stringlen);
-	printf("String: %s\n", str);
-	free(str);
-    return (0);
+	if (sig == SIGUSR1)
+		(*str)[i] |= mask;
+	mask /= 2;
+	if (mask == 0)
+	{
+		mask = 1U << 7U;
+		i++;
+		if (i == *len)
+		{
+			i = 0;
+			*state = PROCESS_END;
+		}
+	}
 }
 
+void	end_process(char **str, unsigned int *len, char *state)
+{
+	write(1, *str, *len);
+	ft_printf(" LEN: %u", *len);
+	write(1, "\n", 1);
+	free(*str);
+	*str = NULL;
+	*len = 0;
+	*state = ASK_FIRST_BIT;
+}
 
-// #include <stdio.h>
-// #include <signal.h>
-// #include <unistd.h>
+void	handle_sigusr(int sig, siginfo_t *info, void *ptr)
+{
+	static unsigned int	len = 0;
+	static char			*str = NULL;
+	static char			state = ASK_FIRST_BIT;
 
-// void handle_sigusr1(int sig) {
-//     (void)sig;
-//     printf("Ceci est un 1 !\n");
-// }
+	(void)ptr;
+	if (state == ASK_FIRST_BIT)
+		state = GETTING_LEN;
+	else if (state == GETTING_LEN)
+		getting_len(sig, &len, &str, &state);
+	else if (state == GETTING_STR)
+		getting_str(sig, &len, &str, &state);
+	if (state == PROCESS_END)
+		end_process(&str, &len, &state);
+	kill(info->si_pid, SIGUSR1);
+}
 
-// void handle_sigusr0(int sig) {
-//     (void)sig;
-//     printf("Ceci est un 0 !\n");
-// }
+int	main(void)
+{
+	struct sigaction	sa;
 
-// int main() {
-//     int pid = getpid();
-//     printf("PID du serveur : %d\n", pid);
-
-//     struct sigaction sa1;
-//     sa1.sa_handler = &handle_sigusr1;
-//     sigaction(SIGUSR1, &sa1, NULL);
-// 	struct sigaction sa0;
-//     sa0.sa_handler = &handle_sigusr0;
-//     sigaction(SIGUSR2, &sa0, NULL);
-
-//     printf("En attente du signal...\n");
-//     pause();
-
-//     return 0;
-// }
+	sa.sa_flags = SA_SIGINFO | SA_RESTART;
+	sa.sa_sigaction = &handle_sigusr;
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
+	ft_printf("[SERVER] %d\n", getpid());
+	ft_printf("[SERVER] Waiting for signal...\n");
+	while (1)
+		pause();
+	return (0);
+}

@@ -11,24 +11,25 @@ OBJ_SERVER	=	$(SRC_SERVER:%.c=%.o)
 CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror
 
-all: $(libft) $(SERVER) $(CLIENT)
+all: $(SERVER) $(CLIENT)
 
 %.o:%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(SERVER): $(OBJ_SERVER)
-	$(CC) $(CFLAGS) $^ -o $@
+	make -C libs/libft
+	$(CC) $(CFLAGS) $^ libs/libft/libft.a -o $@
 
 $(CLIENT): $(OBJ_CLIENT)
-	$(CC) $(CFLAGS) $^ -o $@
-
-$(libft):
 	make -C libs/libft
+	$(CC) $(CFLAGS) $^ libs/libft/libft.a -o $@
 
 clean:
+	make clean -C libs/libft
 	rm -f $(OBJ_SERVER) $(OBJ_CLIENT)
 
 fclean: clean
+	make fclean -C libs/libft
 	rm -f $(SERVER) $(CLIENT)
 
 re: fclean all
