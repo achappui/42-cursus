@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:19:30 by achappui          #+#    #+#             */
-/*   Updated: 2024/01/01 18:28:17 by achappui         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:44:08 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <limits.h>
 # include "../../libs/libft/libft.h"
 
-# define SENDING_LEN		0
-# define SENDING_STR		1
+# define PACKET_NOT_READY	0
+# define PACKET_READY		1
 
 typedef struct s_packet
 {
