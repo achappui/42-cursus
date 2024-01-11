@@ -1,0 +1,4 @@
+mac -Wall -Wextra -Werror -Imlx ##FICHIERS## -framework OpenGL -framework AppKit
+
+
+-Wall -Wextra -Werror -I/usr/include -Imlx_linux -O3 ##FICHIERS## -Lmlx_linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
