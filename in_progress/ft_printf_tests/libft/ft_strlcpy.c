@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/10 19:57:43 by achappui          #+#    #+#             */
-/*   Updated: 2024/01/10 20:00:18 by achappui         ###   ########.fr       */
+/*   Created: 2023/11/01 10:27:03 by achappui          #+#    #+#             */
+/*   Updated: 2023/11/01 10:29:25 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <stdio.h>
+#include "libft.h"
 
-int	main()
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	char	*test;
+	size_t	i;
 
-	test = get_next_line(0);
-	while (test)
+	if (dstsize > 0)
 	{
-		printf("%s\n", test);
-		free(test);
-		test = get_next_line(0);
+		i = 0;
+		while (i < dstsize - 1 && src[i] != '\0')
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = '\0';
 	}
-	if (!test)
-	{
-		printf("NULL\n");
-	}
-	//printf("%s\n", test);
-	return (0);
+	i = 0;
+	while (src[i] != '\0')
+		i++;
+	return (i);
 }

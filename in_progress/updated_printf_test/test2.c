@@ -43,15 +43,16 @@ int main() {
 	// test = 1.0;
 	// printf("%.1f\n", test);
 	// afficherBits4OctetsInverse(&test);
-	// test = 2.0;
-	// printf("%.1f\n", test);
-	// afficherBits4OctetsInverse(&test);
-
-	test = 12356.45;
-	printf("%.20f\n", test);
+	test = 3.0F;
+	printf("%.1f\n", test);
 	afficherBits4OctetsInverse(&test);
 
-	printf("%d\n", 0b00000000000010110011001100110011);
+	// test = 12356.45;
+	// printf("%.20f\n", test);
+	// afficherBits4OctetsInverse(&test);
+
+	// printf("%d\n", 0b00000000000010110011001100110011);
+    printf("%.23f\n", 0.4F);
 	// test = 123.456;
 	// printf("%.20f\n", test);
 	// afficherBits4OctetsInverse(&test);

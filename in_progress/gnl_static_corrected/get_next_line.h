@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 18:29:56 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/21 16:58:59 by achappui         ###   ########.fr       */
+/*   Updated: 2024/01/12 10:11:13 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 # include <stdlib.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 50
+#  define BUFFER_SIZE 3
 # endif
 
 typedef struct s_block
 {
-	char			buffer[BUFFER_SIZE];
+	char			buffer[BUFFER_SIZE + 1];
 	struct s_block	*next;
 }	t_block;
 

@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:18:01 by achappui          #+#    #+#             */
-/*   Updated: 2024/01/12 10:40:24 by achappui         ###   ########.fr       */
+/*   Updated: 2024/01/12 11:16:46 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,23 @@ To print a float/double number in binary, use the flag 0;
 */
 #include "ft_printf.h"
 
-int	ft_print_binary_integer(unsigned long long n, t_options *o)
+unsigned int	calcul_size_binary(t_options *o)
+{
+	if (!(o->flags & F_PRECISION))
+	{
+		if (o->spe == 'p')
+			return (64);
+		else if (o->spe == 'c')
+			return (8);
+		return (32);
+	}
+	else if (o->precision > 64)
+		return (64);
+	else
+		return (o->precision);
+}
+
+int	ft_print_binary_number(unsigned long long n, t_options *o, unsigned int size)
 {
 	char				tab[71];
 	unsigned long long	mask;
@@ -27,9 +43,9 @@ int	ft_print_binary_integer(unsigned long long n, t_options *o)
 	count = 0;
 	i = sizeof(tab);
 	mask = 1ULL;
-	while (o->precision--)
+	while (size--)
 	{
-		if ((o->flags & F_SPACE) && o->precision && count % 8 == 0)
+		if ((o->flags & F_SPACE) && size && count % 8 == 0)
 			tab[--i] = ' ';
 		tab[--i] = ((n & mask) > 0) + '0';
 		mask *= 2;
@@ -45,24 +61,4 @@ int	ft_print_binary_integer(unsigned long long n, t_options *o)
 		((o->flags & F_MINUS) && ft_putchars(o->width, ' ') == -1))
 		return (-1);
 	return (o->width + n + 2 * (o->flags & F_HASHTAG));
-}
-
-unsigned int	ft_convert_float_to_uint(float f)
-{
-	unsigned int	uinteger;
-	void			*f_tab;
-	unsigned int	mask;
-
-	f_tab = &f;
-	uinteger = 0;
-	mask = 1U;
-	while (mask < 2147483648U)
-	{
-		if (*(unsigned int *)f_tab & mask)
-			uinteger |= mask;
-		mask *= 2;
-	}
-	if (*(unsigned int *)f_tab & mask)
-		uinteger |= mask;
-	return (uinteger);
 }
