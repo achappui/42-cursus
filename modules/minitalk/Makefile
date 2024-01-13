@@ -2,8 +2,8 @@ CLIENT		=	client
 SERVER		=	server
 LIBFT		=	libft
 
-SRC_CLIENT	=	srcs/client_mendatory/main.c
-SRC_SERVER	=	srcs/server_mendatory/main.c
+SRC_CLIENT	=	srcs/client.c
+SRC_SERVER	=	srcs/server.c
 
 OBJ_CLIENT	=	$(SRC_CLIENT:%.c=%.o)
 OBJ_SERVER	=	$(SRC_SERVER:%.c=%.o)
