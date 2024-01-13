@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:59:52 by achappui          #+#    #+#             */
-/*   Updated: 2023/12/21 23:31:25 by achappui         ###   ########.fr       */
+/*   Updated: 2024/01/13 19:50:09 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,19 @@ typedef struct s_push_swap
 	struct s_stack	b;
 }	t_push_swap;
 
+void	input_error_handler(t_push_swap *ps, t_list *list);
+void	fill_stack_a(t_push_swap *ps, t_list *list);
+void	input_handler(t_push_swap *ps, int argc, char *argv[]);
+void	error_handler(t_push_swap *ps);
 int		*radix_sort(int arr[], unsigned int size);
 void	sort_only_three_a(t_push_swap *ps);
 void	replace_by_index(t_push_swap *ps);
 void	sorting_algo(t_push_swap *ps);
-void	error_handler(t_push_swap *ps);
 void	push(t_push_swap *ps, char which);
 void	swap(t_push_swap *ps, char which);
 void	rotate(t_push_swap *ps, char which);
 void	reverse_rotate(t_push_swap *ps, char which);
 void	midpoint_chunker(t_push_swap *ps);
 void	rotate_to_sorted(t_push_swap *ps);
-void	build_stack_a_and_b(t_push_swap *ps, unsigned int size, \
-							char **args, char split);
 
 #endif

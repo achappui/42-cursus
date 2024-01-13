@@ -60,13 +60,16 @@ int	main(int argc, char **argv)
 {
 	t_push_swap	ps;
 
-	if (argc-- < 2)
+	if (argc < 2)
 		return (0);
 	init_stack(&ps.a);
 	init_stack(&ps.b);
-	build_stack_a_and_b(&ps, argc, argv + 1, (argc == 1));
+	input_handler(&ps, argc, argv);
 	if (!ps.a.size)
+	{
+		free_stacks(&ps);
 		return (0);
+	}
 	run_steps(&ps);
 	if (is_b_empty_and_a_sorted(&ps))
 	{

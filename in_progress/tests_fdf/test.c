@@ -1,5 +1,5 @@
 //#include "mlx.h"
-#include "mlx_linux.h"
+#include "mlx.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -187,16 +187,16 @@ void ligne_2(short x1,short y1,short x2,short y2, void *mlx_ptr, void *win_ptr)
 // }
 
 
-void	fonc_display()
-{
-	make_final_multiplier_matrice(); //qui regroupe les operations de translate, de rotate et de zoom; a appliquer a chaque points
-	while (points)
-	{
-		calcul_point_pos();
-		put_point_in_image();
-	}
-	put_image_on_screen();
-}
+// void	fonc_display()
+// {
+// 	make_final_multiplier_matrice(); //qui regroupe les operations de translate, de rotate et de zoom; a appliquer a chaque points
+// 	while (points)
+// 	{
+// 		calcul_point_pos();
+// 		put_point_in_image();
+// 	}
+// 	put_image_on_screen();
+// }
 
 
 
@@ -253,15 +253,14 @@ int get_key(int key, t_free *param)
 {
     printf("keynum: %d\n", key);
 	(void)param;
-	if (key == 65307)
+	if (key == 53)
 	{
 		printf("yoo\n");
-		//mlx_destroy_image(param->mlx_ptr, param->img);
+		mlx_destroy_image(param->mlx_ptr, param->img);
 		//mlx_clear_window(param->mlx_ptr, param->win_ptr);
 		mlx_destroy_window(param->mlx_ptr, param->win_ptr);
-		//free(param->win_ptr);
-		//free(param->mlx_ptr);
-		//mlx_destroy_display(param->mlx_ptr);
+		
+		exit(0);
 	}
     return (0);
 }
@@ -278,7 +277,7 @@ int main()
 {
 	void    *mlx_ptr;
     void    *win_ptr;
-	//t_free	param;
+	t_free	param;
 
     mlx_ptr = mlx_init();
     win_ptr = mlx_new_window(mlx_ptr, 500, 500, "salut");
@@ -302,20 +301,20 @@ int main()
 
 
 
-	// t_data	img;
-	// img.img = mlx_new_image(mlx_ptr, 500, 500);
+	t_data	img;
+	img.img = mlx_new_image(mlx_ptr, 500, 500);
 
-	// img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	// my_mlx_pixel_put(&img, 5, 5, 0x0000FF00);
-	// my_mlx_pixel_put(&img, 6, 5, 0x0000FF00);
-	// my_mlx_pixel_put(&img, 5, 6, 0x0000FF00);
-	// my_mlx_pixel_put(&img, 6, 6, 0x0000FF00);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+	my_mlx_pixel_put(&img, 5, 5, 0x0000FF00);
+	my_mlx_pixel_put(&img, 6, 5, 0x0000FF00);
+	my_mlx_pixel_put(&img, 5, 6, 0x0000FF00);
+	my_mlx_pixel_put(&img, 6, 6, 0x0000FF00);
 
-	// mlx_put_image_to_window(mlx_ptr, win_ptr, img.img, 0, 0);
-	// param.img = img.img;
-	//param.mlx_ptr = mlx_ptr;
-	//param.win_ptr = win_ptr;
-	//mlx_key_hook(win_ptr, &get_key, &param);
+	mlx_put_image_to_window(mlx_ptr, win_ptr, img.img, 0, 0);
+	param.img = img.img;
+	param.mlx_ptr = mlx_ptr;
+	param.win_ptr = win_ptr;
+	mlx_key_hook(win_ptr, &get_key, &param);
     mlx_loop(mlx_ptr);
     return (0);
 }

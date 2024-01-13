@@ -34,7 +34,7 @@ static void	validate_and_execute_in(t_push_swap *ps, char *in)
 	else if (ok == 's')
 		swap(ps, in[1]);
 	else
-		reverse_rotate(ps, in[1]);
+		reverse_rotate(ps, in[2]);
 }
 
 void	run_steps(t_push_swap *ps)

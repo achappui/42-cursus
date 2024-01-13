@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:59:52 by achappui          #+#    #+#             */
-/*   Updated: 2023/12/22 00:02:31 by achappui         ###   ########.fr       */
+/*   Updated: 2024/01/13 19:57:31 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ typedef struct s_push_swap
 	struct s_stack	b;
 }	t_push_swap;
 
+void	input_error_handler(t_push_swap *ps, t_list *list);
+void	fill_stack_a(t_push_swap *ps, t_list *list);
+void	input_handler(t_push_swap *ps, int argc, char *argv[]);
 void	push(t_push_swap *ps, char which);
 void	swap(t_push_swap *ps, char which);
 void	rotate(t_push_swap *ps, char which);

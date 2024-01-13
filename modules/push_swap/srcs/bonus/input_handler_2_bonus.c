@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_handler_bonus.c                              :+:      :+:    :+:   */
+/*   input_handler_2_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/27 18:58:59 by achappui          #+#    #+#             */
-/*   Updated: 2023/12/21 23:47:26 by achappui         ###   ########.fr       */
+/*   Created: 2024/01/13 18:24:30 by achappui          #+#    #+#             */
+/*   Updated: 2024/01/13 19:57:44 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,55 +49,28 @@ static char	already_in(int *stack, unsigned int i, int elem)
 	return (0);
 }
 
-static char	make_stacks(t_push_swap *ps, unsigned int size, char **args)
+void	fill_stack_a(t_push_swap *ps, t_list *list)
 {
 	unsigned int	i;
+	unsigned int	j;
+	t_list			*begin;
 
-	ps->a.stack = (int *)malloc(ps->a.mem_size * sizeof(int));
-	if (!ps->a.stack)
-		return (0);
-	ps->b.stack = (int *)malloc(ps->b.mem_size * sizeof(int));
-	if (!ps->b.stack)
-		return (0);
+	begin = list;
 	i = 0;
-	while (i < size)
+	list = list->next;
+	while (list)
 	{
-		if (!valid_int(args[i]))
-			return (0);
-		ps->a.stack[i] = ft_atoi(args[i]);
-		if (already_in(ps->a.stack, i, ps->a.stack[i]))
-			return (0);
-		i++;
+		j = 0;
+		while (((char **)list->content)[j] != NULL)
+		{
+			if (!valid_int(((char **)list->content)[j]))
+				input_error_handler(ps, begin->next);
+			ps->a.stack[i] = ft_atoi(((char **)list->content)[j]);
+			if (already_in(ps->a.stack, i, ps->a.stack[i]))
+				input_error_handler(ps, begin->next);
+			j++;
+			i++;
+		}
+		list = list->next;
 	}
-	return (1);
-}
-
-void	build_stack_a_and_b(t_push_swap *ps, unsigned int size, \
-							char **args, char split)
-{
-	char	ok;
-
-	if (split)
-	{
-		args = ft_split(*args, WHITE_SPACES);
-		if (!args)
-			error_handler(ps);
-		size = 0;
-		while (args[size] != NULL)
-			size++;
-	}
-	ps->a.mem_size = size + 1;
-	ps->b.mem_size = size + 1;
-	ps->a.size = size;
-	if (size)
-		ok = make_stacks(ps, size, args);
-	if (split)
-	{
-		size = 0;
-		while (args[size] != NULL)
-			free(args[size++]);
-		free(args);
-	}
-	if (!size || !ok)
-		error_handler(ps);
 }
