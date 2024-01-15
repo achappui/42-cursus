@@ -2,6 +2,7 @@
 	"files.associations": {
 		"libft.h": "c",
 		"fdf.h": "c",
-		"limits.h": "c"
+		"limits.h": "c",
+		"mlx.h": "c"
 	}
 }

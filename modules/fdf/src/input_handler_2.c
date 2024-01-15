@@ -25,21 +25,21 @@ static void	remove_gnl_eol(char *line)
 	}
 }
 
-static void	make_map_2darray(t_list *list, t_fdfinput *inputs) //on oublie pas que le premier de list est un noeud local qui ne compte pas dans la vrai liste
+static void	make_map_2darray(t_list *list, t_map *inputs) //on oublie pas que le premier de list est un noeud local qui ne compte pas dans la vrai liste
 {
 	t_list			*next;
 	unsigned int	i;
 
 	if (inputs->col_len == 0)
-		error_handler(list, NULL, NULL);
-	inputs->map = (long long **)malloc(inputs->col_len * sizeof(long long *));
-	if (!inputs->map)
-		error_handler(list, NULL, NULL);
+		error_handler_parsing(list, NULL, NULL);
+	inputs->tab = (long long **)malloc(inputs->col_len * sizeof(long long *));
+	if (!inputs->tab)
+		error_handler_parsing(list, NULL, NULL);
 	i = 0;
 	while (list)
 	{
 		next = list->next;
-		inputs->map[i] = (long long *)list->content;
+		inputs->tab[i] = (long long *)list->content;
 		free(list);
 		list = next;
 		i++;
@@ -74,7 +74,7 @@ static char	fill_array(long long *array, char **split)
 	return (1);
 }
 
-static long long	*make_valid_int_array(char **split, t_fdfinput *inputs)
+static long long	*make_valid_int_array(char **split, t_map *inputs)
 {
 	unsigned int	i;
 	long long		*array;
@@ -99,7 +99,7 @@ static long long	*make_valid_int_array(char **split, t_fdfinput *inputs)
 	return (array);
 }
 
-void	parse_file_content(int fd, t_list *begin, t_list *list, t_fdfinput *inputs)// balancer un premier element local a une fonction qui se freera tout seul mais qui sert de noeud de dep pour les malloquer
+void	parse_file_content(int fd, t_list *begin, t_list *list, t_map *inputs)// balancer un premier element local a une fonction qui se freera tout seul mais qui sert de noeud de dep pour les malloquer
 {
 	char				*line;
 	char				**split;
@@ -113,15 +113,15 @@ void	parse_file_content(int fd, t_list *begin, t_list *list, t_fdfinput *inputs)
 		remove_gnl_eol(line);
 		split = ft_split(line, WHITE_SPACES);
 		if (!split)
-			error_handler(begin->next, line, NULL);
+			error_handler_parsing(begin->next, line, NULL);
 		free(line);
 		array = make_valid_int_array(split, inputs);
 		if (!array)
-			error_handler(begin->next, NULL, split);
+			error_handler_parsing(begin->next, NULL, split);
 		ft_split_free(split);
 		list->next = ft_lstnew(array);
 		if (!list->next)
-			error_handler(begin->next, array, NULL);
+			error_handler_parsing(begin->next, array, NULL);
 		list = list->next;
 	}
 	make_map_2darray(begin->next, inputs);

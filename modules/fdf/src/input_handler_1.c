@@ -30,21 +30,7 @@ static void	check_arguments(int argc, char *argv[])
 	}
 }
 
-void	free_inputs(t_fdfinput *inputs)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (i < inputs->col_len)
-	{
-		free(inputs->map[i]);
-		i++;
-	}
-	if (inputs->map)
-		free(inputs->map);
-}
-
-void	error_handler(t_list *list, void *to_free, char **split_to_free) //amelio gnl
+void	error_handler_parsing(t_list *list, void *to_free, char **split_to_free) //amelio gnl
 {
 	ft_lstclear(&list, &free);
 	if (to_free)
@@ -55,7 +41,7 @@ void	error_handler(t_list *list, void *to_free, char **split_to_free) //amelio g
 	exit(1);
 }
 
-void	input_handler(int argc, char *argv[], t_fdfinput *inputs)
+void	input_handler(int argc, char *argv[], t_map *inputs)
 {
 	t_list	parsing_list;
 	int		fd;

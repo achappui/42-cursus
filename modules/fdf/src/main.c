@@ -53,10 +53,16 @@ void	apply_transform()
 
 }
 
+void	end_program(t_fdf *fdf)
+{
+
+	exit(0);
+}
+
 int	key_hook(int key, t_fdf *fdf)
 {
 	if (key == KEY_UP)
-		fdf->translation[Y]--;
+		fdf->t.translation[Y]--;
 	else if (key == KEY_DOWN)
 		fdf->translation[Y]++;
 	else if (key == KEY_RIGHT)
@@ -72,14 +78,14 @@ int	key_hook(int key, t_fdf *fdf)
 	else if (key == KEY_W)
 		fdf->scale -= SCALE_AMOUNT;
 	else if (key == KEY_ESC)
-		exit(0);
+		end_program(fdf);
 	else
 		return (0);
 	display_figure(fdf);
 	return (0);
 }
 
-void	init_fdf(t_fdf *fdf)
+void	init_fdf_struct(t_fdf *fdf)
 {
 	fdf->m.col_len = 0;
 	fdf->m.line_len = 0;
@@ -89,31 +95,83 @@ void	init_fdf(t_fdf *fdf)
 	fdf->t.translation[X] = 0;
 	fdf->t.translation[Y] = 0;
 	fdf->t.translation[Z] = 0;
-	calcul_cos_table(fdf->t.cos_t);
-	calcul_sin_table(fdf->t.sin_t);
+	calcul_table(fdf->t.cos_t); //a changer
+	fdf->u.mlx_ptr = NULL;
+	fdf->u.win_ptr = NULL;
+	fdf->u.line = NULL;
+	fdf->u.prev_line = NULL;
+}
+
+void	free_all(t_fdf *fdf)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < fdf->m.col_len)
+		free(fdf->m.tab[i++]);
+	if (fdf->m.tab)
+		free(fdf->m.tab);
+	if (fdf->u.line)
+		free(fdf->u.line);
+	if (fdf->u.prev_line)
+		free(fdf->u.prev_line);
+}
+
+void	prepare_utils(t_fdf *fdf)
+{
+	fdf->u.line = (t_util *)malloc(fdf->m.line_len * sizeof(t_util));
+	if (!fdf->u.line)
+	{
+		free_all(fdf);
+		ft_putendl_fd("ERROR: malloc failed\n", 2);
+		exit(1);
+	}
+	fdf->u.prev_line = (t_util *)malloc(fdf->m.line_len * sizeof(t_util));
+	if (!fdf->u.line)
+	{
+		free_all(fdf);
+		ft_putendl_fd("ERROR: malloc failed\n", 2);
+		exit(1);
+	}
 }
 
 int	main(int argc, char *argv[])
 {
 	t_fdf	fdf;
 
-	init_fdf(&fdf);
+	init_fdf_struct(&fdf);
 	input_handler(argc, argv, &fdf.m);
-	// unsigned int	i;
-	// i = 0;
-	// unsigned int	j;
-	// while (i < inputs.col_len)
-	// {
-	// 	j = 0;
-	// 	while (j < inputs.line_len)
-	// 	{
-	// 		printf("%d,%X ", (int)(inputs.map[i][j] >> 32), (unsigned int)(inputs.map[i][j]));
-	// 		j++;
-	// 	}
-	// 	printf("\n");
-	// 	i++;
-	// }
-	int	mlx_key_hook (void *win_ptr, int (*funct_ptr)(), void *param);
-	free_inputs(&inputs);
+	prepare_utils(&fdf);
+	fdf.u.mlx_ptr = mlx_init();
+	if (!fdf.u.mlx_ptr)
+		
+	fdf.u.win_ptr = mlx_new_window(fdf.u.mlx_ptr, 500, 500, "salut");
+	if (!fdf.u.win_ptr)
+
+
+
+	mlx_key_hook(fdf.u.mlx_ptr, &key_hook, &fdf);
+	mlx_loop(fdf.u.mlx_ptr);
+	free_all(&fdf);
 	return (0);
+}
+
+
+void	print_map(t_fdf *fdf)
+{
+	unsigned int	i;
+	unsigned int	j;
+
+	i = 0;
+	while (i < fdf->m.col_len)
+	{
+		j = 0;
+		while (j < fdf->m.line_len)
+		{
+			ft_printf("%d,%X ", (int)(fdf->m.tab[i][j] >> 32), (unsigned int)(fdf->m.tab[i][j]));
+			j++;
+		}
+		ft_printf("\n");
+		i++;
+	}
 }
