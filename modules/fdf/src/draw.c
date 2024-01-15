@@ -12,34 +12,26 @@
 
 #include "fdf.h"
 
-void	draw_line(t_fdfpoint *p1, t_fdfpoint *p2)
-{
-	
-}
 
-void	display_figure(t_fdfpoint **points, unsigned int line_len,  unsigned int col_len)
+void ligne_8(short x1,short y1,short x2,short y2, void *mlx_ptr, void *win_ptr)
 {
-	unsigned int	i;
-	unsigned int	j;
+    short err, dx, dy;
 
-	i = 0;
-	j = 0;
-	while (i < line_len - 1)
+    dx = x2 - x1 ;
+    dy = y2 - y1 ;
+    err = -dx >> 1 ;
+    x2 = x2 - x1 + 1;
+
+	while (x2-- > 0)
 	{
-		draw_line(&points[j][i], &points[i + 1]);
-		i++;
-	}
-	j++;
-	while (j < col_len)
-	{
-		i = 0;
-		while (i < line_len - 1)
-		{
-			draw_line(&points[j][i], &points[j][i + 1]);
-			draw_line(&points[j][i], &points[j - 1][i]);
-			i++;
-		}
-		draw_line(&points[j][i], &points[j - 1][i]);
-		j++;
+		*(unsigned int*)(data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8))) = color;
+
+        err += dy;
+        if(err > 0)
+        {
+            err -= dx;
+            y1++;
+        }
+        x1++;
 	}
 }

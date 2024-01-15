@@ -12,13 +12,6 @@
 
 #include "fdf.h"
 
-static void	init_input(t_fdfinput *inputs)
-{
-	inputs->col_len = 0;
-	inputs->line_len = 0;
-	inputs->map = NULL;
-}
-
 static void	check_arguments(int argc, char *argv[])
 {
 	size_t	len;
@@ -69,7 +62,6 @@ void	input_handler(int argc, char *argv[], t_fdfinput *inputs)
 
 	parsing_list.content = NULL;
 	parsing_list.next = NULL;
-	init_input(inputs);
 	check_arguments(argc, argv);
 	fd = open(argv[1], O_RDONLY);
 	if (fd <= 0)

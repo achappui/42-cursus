@@ -17,12 +17,53 @@
 # define WHITE_SPACES	" \t\n\v\f\r"
 # define INVALID		LLONG_MAX
 
-typedef struct s_fdfinput
+# define KEY_UP		0
+# define KEY_DOWN	0
+# define KEY_RIGHT	0
+# define KEY_LEFT	0
+# define KEY_ESC	0
+# define KEY_E		0
+# define KEY_R		0
+# define KEY_Q		0
+# define KEY_W		0
+
+# define X	0
+# define Y	1
+# define Z	2
+
+
+# define NO_FLOAT_MULTIPLIER	1000
+# define TRANSLATION_AMOUNT		
+# define ROTATION_TABLE_SIZE	10
+# define SCALE_AMOUNT			2
+
+typedef struct s_fdf
 {
-	long long		**map;
+	t_map		m;
+	t_transform	t;
+}	t_fdf;
+
+typedef struct s_map
+{
+	long long		**tab;
 	unsigned int	line_len;
 	unsigned int	col_len;
-}	t_fdfinput;
+}	t_map;
+
+typedef struct s_fdftransform
+{
+	int			translation[3];
+	int			scale; //ajout a x y z, commence a 0
+	int			rot_idx;
+	int			table[ROTATION_TABLE_SIZE]; //on a besoin de juste un quart de cercle et sin et cos sont juste decaler de 90 degre
+}	t_transform;
+
+typedef struct s_screen_point
+{
+	int				x;
+	int				y;
+	unsigned int	color;
+}	t_screen_point;
 
 void		free_inputs(t_fdfinput *inputs);
 void		error_handler(t_list *list, void *to_free, char **split_to_free);
