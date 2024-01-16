@@ -56,9 +56,13 @@ typedef struct	s_free {
 // 	}
 // }
 
+// void	choose_bresenham()
+// {
+// 	if ()
+// }
 
 
-void ligne_8(short x1,short y1,short x2,short y2, void *mlx_ptr, void *win_ptr)
+void oct_8(short x1,short y1,short x2,short y2, void *mlx_ptr, void *win_ptr)
 {
     short err, dx, dy;
 
@@ -81,7 +85,7 @@ void ligne_8(short x1,short y1,short x2,short y2, void *mlx_ptr, void *win_ptr)
 	}
 }
 
-void ligne_1(short x1,short y1,short x2,short y2, void *mlx_ptr, void *win_ptr)
+void oct_1(short x1,short y1,short x2,short y2, void *mlx_ptr, void *win_ptr)
 {
     short err, dx, dy;
 
@@ -104,7 +108,30 @@ void ligne_1(short x1,short y1,short x2,short y2, void *mlx_ptr, void *win_ptr)
 	}
 }
 
-void ligne_7(short x1,short y1,short x2,short y2, void *mlx_ptr, void *win_ptr)
+void oct_2(short x1,short y1,short x2,short y2, void *mlx_ptr, void *win_ptr)
+{
+    short err, dx, dy;
+
+    dx = x2 - x1 ;
+    dy = y2 - y1 ;
+    err = dy >> 1 ;
+    y2 = y1 - y2 + 1;
+
+	while (y2-- > 0)
+	{
+        mlx_pixel_put(mlx_ptr, win_ptr, x1, y1, 0xFFFFFF);
+
+        err += dx;
+        if(err > 0)
+        {
+            err += dy;
+            x1++;
+        }
+        y1--;
+	}
+}
+
+void oct_7(short x1,short y1,short x2,short y2, void *mlx_ptr, void *win_ptr)
 {
     short err, dx, dy;
 
@@ -129,28 +156,28 @@ void ligne_7(short x1,short y1,short x2,short y2, void *mlx_ptr, void *win_ptr)
 
 
 
-void ligne_2(short x1,short y1,short x2,short y2, void *mlx_ptr, void *win_ptr)
-{
-    short err, dx, dy;
+// void ligne_2(short x1,short y1,short x2,short y2, void *mlx_ptr, void *win_ptr)
+// {
+//     short err, dx, dy;
 
-    dx = x2 - x1 ;
-    dy = y2 - y1 ;
-    err = dy >> 1 ;
-    y2 = y2 - y1 + 1;
+//     dx = x2 - x1 ;
+//     dy = y2 - y1 ;
+//     err = -dy >> 1 ;
+//     y2 = y2 - y1 + 1;
 
-	while (y2-- > 0)
-	{
-        mlx_pixel_put(mlx_ptr, win_ptr, x1, y1, 0xFFFFFF);
+// 	while (y2-- > 0)
+// 	{
+//         mlx_pixel_put(mlx_ptr, win_ptr, x1, y1, 0xFFFFFF);
 
-        err += dx;
-        if(err < 0)
-        {
-            err += dy;
-            x1--;
-        }
-        y1++;
-	}
-}
+//         err += dx;
+//         if(err > 0)
+//         {
+//             err += dy;
+//             x1--;
+//         }
+//         y1++;
+// 	}
+// }
 
 
 // void	choose_algo()
@@ -284,10 +311,10 @@ int main()
     //mlx_pixel_put(mlx_ptr, win_ptr, 250, 250, 0xFFFFFF);
 
 	//x
-	ligne_8(250, 250, 280, 260, mlx_ptr, win_ptr); //8em octant
-	ligne_1(250, 250, 280, 240, mlx_ptr, win_ptr); //1er octant
-	ligne_7(250, 250, 260, 280, mlx_ptr, win_ptr); //8em octant
-	ligne_2(250, 250, 240, 280, mlx_ptr, win_ptr); //8em octant
+	oct_8(250, 250, 280, 260, mlx_ptr, win_ptr); //8em octant
+	oct_1(250, 250, 280, 240, mlx_ptr, win_ptr); //1er octant
+	oct_7(250, 250, 260, 280, mlx_ptr, win_ptr); //8em octant
+	oct_2(250, 250, 260, 220, mlx_ptr, win_ptr); //8em octant
 
 	// //y
 	// ligne2(250, 250, 280, 240, mlx_ptr, win_ptr);
@@ -301,20 +328,20 @@ int main()
 
 
 
-	t_data	img;
-	img.img = mlx_new_image(mlx_ptr, 500, 500);
+	// t_data	img;
+	// img.img = mlx_new_image(mlx_ptr, 500, 500);
 
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	my_mlx_pixel_put(&img, 5, 5, 0x0000FF00);
-	my_mlx_pixel_put(&img, 6, 5, 0x0000FF00);
-	my_mlx_pixel_put(&img, 5, 6, 0x0000FF00);
-	my_mlx_pixel_put(&img, 6, 6, 0x0000FF00);
+	// img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+	// my_mlx_pixel_put(&img, 5, 5, 0x0000FF00);
+	// my_mlx_pixel_put(&img, 6, 5, 0x0000FF00);
+	// my_mlx_pixel_put(&img, 5, 6, 0x0000FF00);
+	// my_mlx_pixel_put(&img, 6, 6, 0x0000FF00);
 
-	mlx_put_image_to_window(mlx_ptr, win_ptr, img.img, 0, 0);
-	param.img = img.img;
-	param.mlx_ptr = mlx_ptr;
-	param.win_ptr = win_ptr;
-	mlx_key_hook(win_ptr, &get_key, &param);
+	// mlx_put_image_to_window(mlx_ptr, win_ptr, img.img, 0, 0);
+	// param.img = img.img;
+	// param.mlx_ptr = mlx_ptr;
+	// param.win_ptr = win_ptr;
+	// mlx_key_hook(win_ptr, &get_key, &param);
     mlx_loop(mlx_ptr);
     return (0);
 }

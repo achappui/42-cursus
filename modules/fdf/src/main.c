@@ -12,46 +12,39 @@
 
 #include "fdf.h"
 
-void	draw_line(t_fdfpoint *p1, t_fdfpoint *p2)
-{
+// void	draw_line(t_fdfpoint *p1, t_fdfpoint *p2)
+// {
 	
-}
+// }
 
-void	display_figure(t_fdfpoint **points, unsigned int line_len,  unsigned int col_len)
-{
-	unsigned int	i;
-	unsigned int	j;
+// void	display_figure(t_fdfpoint **points, unsigned int line_len,  unsigned int col_len)
+// {
+// 	unsigned int	i;
+// 	unsigned int	j;
 
-	i = -1;
-	j = 0;
-	while (i < line_len - 1)
-		draw_line(&points[j][i], &points[i + 1]);
-	j++;
-	while (j < col_len)
-	{
-		i = 0;
-		while (i < line_len - 1)
-		{
-			draw_line(&points[j][i], &points[j][i + 1]);
-			draw_line(&points[j][i], &points[j - 1][i]);
-			i++;
-		}
-		draw_line(&points[j][i], &points[j - 1][i]);
-		j++;
-	}
-}
+// 	i = -1;
+// 	j = 0;
+// 	while (i < line_len - 1)
+// 		draw_line(&points[j][i], &points[i + 1]);
+// 	j++;
+// 	while (j < col_len)
+// 	{
+// 		i = 0;
+// 		while (i < line_len - 1)
+// 		{
+// 			draw_line(&points[j][i], &points[j][i + 1]);
+// 			draw_line(&points[j][i], &points[j - 1][i]);
+// 			i++;
+// 		}
+// 		draw_line(&points[j][i], &points[j - 1][i]);
+// 		j++;
+// 	}
+// }
 
-void	calcul_line(t_fdf *fdf, int tmp_point[3])
-{
-	//static int	tmp_point[3];
-	
+// void	apply_transform()
+// {
 
-}
-
-void	apply_transform()
-{
-
-}
+// }
 
 void	end_program(t_fdf *fdf)
 {
@@ -81,6 +74,7 @@ int	key_hook(int key, t_fdf *fdf)
 		end_program(fdf);
 	else
 		return (0);
+	mlx_clear_window(fdf->u.mlx_ptr, fdf->u.win_ptr);
 	display_figure(fdf);
 	return (0);
 }
