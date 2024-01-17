@@ -5,91 +5,90 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/20 19:16:39 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/21 15:08:45 by achappui         ###   ########.fr       */
+/*   Created: 2023/11/09 18:29:54 by achappui          #+#    #+#             */
+/*   Updated: 2024/01/17 16:23:02 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_get_to_eol_len(t_gnl_block *block, int fd)
+void	ft_fill_line(char *line, t_sinfo *si, unsigned int index)
 {
-	int	i;
+	t_block	*blocks;
+
+	blocks = &si->sblock;
+	while (1)
+	{
+		if (blocks->buffer[index] == '\0')
+		{
+			blocks = blocks->next;
+			index = 0;
+			if (blocks->buffer[0] == '\0')
+			{
+				si->sindex = BUFFER_SIZE;
+				return ;
+			}
+		}
+		if (blocks->buffer[index] == '\n')
+		{
+			*line = '\n';
+			si->sindex = index + 1;
+			while (++index < BUFFER_SIZE)
+				si->sblock.buffer[index] = blocks->buffer[index];
+			return ;
+		}
+		*line++ = blocks->buffer[index++];
+	}
+}
+
+int	ft_get_line_length(int fd, t_block *block, unsigned int index)
+{
 	int	len;
 
 	len = 0;
-	i = 0;
 	while (1)
 	{
-		if (!block->buff || block->buff[i] == '\0')
+		if (block->buffer[index] == '\0')
 		{
 			block->next = ft_read_next_block(fd);
 			if (!block->next)
 				return (-1);
 			block = block->next;
-			i = 0;
+			index = 0;
+			if (block->buffer[0] == '\0')
+				return (len);
 		}
-		if (block->buff[i] == '\n')
+		if (block->buffer[index] == '\n')
 			return (len + 1);
-		else if (block->buff[0] == '\0')
-			return (len);
-		else
-		{
-			i++;
-			len++;
-		}
-	}
-}
-
-char	*ft_fill_line_get_rest(char *line, t_gnl_block *block, int len)
-{
-	int	i;
-
-	i = 0;
-	while (len > 0)
-	{
-		if (!block->buff || block->buff[i] == '\0')
-		{
-			block = block->next;
-			i = 0;
-		}
-		*line++ = block->buff[i++];
-		len--;
-	}
-	*line = '\0';
-	line = NULL;
-	while (block->buff[len + i] != '\0')
 		len++;
-	if (len++)
-	{
-		line = (char *)malloc((len) * sizeof(char));
-		if (line)
-			while (--len >= 0)
-				line[len] = block->buff[len + i];
+		index++;
 	}
-	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static t_gnl_block	sb = {.buff = NULL, .next = NULL};
-	char				*line;
-	int					len;
+	static t_sinfo	si = {.sindex = BUFFER_SIZE, .sblock.next = NULL, \
+							.sblock.buffer = {[BUFFER_SIZE] = '\0'}};
+	char			*line;
+	int				len;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	len = ft_get_to_eol_len(&sb, fd);
-	if (len <= 0)
+	line = NULL;
+	len = ft_get_line_length(fd, &si.sblock, si.sindex);
+	if (len > 0)
 	{
-		ft_free_update_rest(&sb, NULL);
-		return (NULL);
+		line = (char *)malloc((len + 1) * sizeof(char));
+		if (line)
+		{
+			line[len] = '\0';
+			ft_fill_line(line, &si, si.sindex);
+		}
 	}
-	line = (char *)malloc((len + 1) * sizeof(char));
-	if (!line)
-	{
-		ft_free_update_rest(&sb, NULL);
-		return (NULL);
-	}
-	ft_free_update_rest(&sb, ft_fill_line_get_rest(line, &sb, len));
+	else
+		si.sindex = BUFFER_SIZE;
+	ft_freeblocks(&si.sblock.next);
+	if (len == -1)
+		return ((void *)-1);
 	return (line);
 }

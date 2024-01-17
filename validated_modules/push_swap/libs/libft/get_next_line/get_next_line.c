@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 18:29:54 by achappui          #+#    #+#             */
-/*   Updated: 2024/01/12 10:11:52 by achappui         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:23:02 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,7 @@ char	*get_next_line(int fd)
 	else
 		si.sindex = BUFFER_SIZE;
 	ft_freeblocks(&si.sblock.next);
+	if (len == -1)
+		return ((void *)-1);
 	return (line);
 }

@@ -5,63 +5,41 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/20 19:16:36 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/21 15:10:18 by achappui         ###   ########.fr       */
+/*   Created: 2023/11/09 18:29:52 by achappui          #+#    #+#             */
+/*   Updated: 2024/01/17 16:21:59 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_gnl_block	*ft_read_next_block(int fd)
+t_block	*ft_read_next_block(int fd)
 {
-	t_gnl_block	*new_elem;
-	ssize_t		read_bytes;
+	t_block	*new_block;
+	ssize_t	read_bytes;
 
-	new_elem = (t_gnl_block *)malloc(sizeof(t_gnl_block));
-	if (new_elem == NULL)
+	new_block = (t_block *)malloc(1 * sizeof(t_block));
+	if (new_block == NULL)
 		return (NULL);
-	new_elem->buff = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (new_elem->buff == NULL)
-	{
-		free(new_elem);
-		return (NULL);
-	}
-	read_bytes = read(fd, new_elem->buff, BUFFER_SIZE);
+	read_bytes = read(fd, new_block->buffer, BUFFER_SIZE);
 	if (read_bytes == -1)
 	{
-		free(new_elem->buff);
-		free(new_elem);
+		free(new_block);
 		return (NULL);
 	}
-	((char *)new_elem->buff)[read_bytes] = '\0';
-	new_elem->next = NULL;
-	return (new_elem);
+	new_block->buffer[read_bytes] = '\0';
+	new_block->next = NULL;
+	return (new_block);
 }
 
-void	ft_free_update_rest(t_gnl_block *s, char *rest)
+void	ft_freeblocks(t_block **block)
 {
-	t_gnl_block	*next;
-	t_gnl_block	*blocks;
+	t_block	*next;
 
-	blocks = s->next;
-	if (rest)
+	while (*block != NULL)
 	{
-		if (s->buff)
-			free(s->buff);
-		s->buff = rest;
+		next = (*block)->next;
+		free(*block);
+		*block = next;
 	}
-	else
-	{
-		if (s->buff)
-			free(s->buff);
-		s->buff = NULL;
-	}
-	while (blocks)
-	{
-		next = blocks->next;
-		free(blocks->buff);
-		free(blocks);
-		blocks = next;
-	}
-	s->next = NULL;
+	*block = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 18:29:52 by achappui          #+#    #+#             */
-/*   Updated: 2023/11/22 14:23:08 by achappui         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:21:59 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ t_block	*ft_read_next_block(int fd)
 		free(new_block);
 		return (NULL);
 	}
-	else if (read_bytes < BUFFER_SIZE)
-		new_block->buffer[read_bytes] = '\0';
+	new_block->buffer[read_bytes] = '\0';
 	new_block->next = NULL;
 	return (new_block);
 }

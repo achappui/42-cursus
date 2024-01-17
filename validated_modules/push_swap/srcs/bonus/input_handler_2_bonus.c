@@ -1,43 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_handler_2.c                                  :+:      :+:    :+:   */
+/*   input_handler_2_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 18:24:30 by achappui          #+#    #+#             */
-/*   Updated: 2024/01/13 20:03:04 by achappui         ###   ########.fr       */
+/*   Updated: 2024/01/17 19:47:53 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "push_swap_bonus.h"
 
 static char	valid_int(const char *str)
 {
-	const char		*int_max;
-	unsigned int	len;
-	unsigned int	i;
-	char			sign;
-
-	int_max = "2147483647";
-	sign = '+';
-	if (*str == '+' || *str == '-')
-		sign = *str++;
-	while (*str == '0' && *(str + 1) != '\0')
-		str++;
-	len = -1;
-	while (str[++len] != '\0')
-		if (str[len] < '0' || str[len] > '9')
-			return (0);
-	if (len > 10 || len == 0)
-		return (0);
-	i = 0;
-	while (str[i] == int_max[i])
-		i++;
-	if (len == 10 && ((i < 9 && (str[i] > int_max[i])) || \
-		(i == 9 && str[i] == '8' && sign == '+') || \
-		(i == 9 && str[i] > '8')))
-		return (0);
+	int			sign;
+	long long	number;
+	
+	number = 0;
+	sign = 1;
+	if (*str == '+')
+	    str++;
+	else if (*str == '-' && str++)
+	    sign = -1;
+	if (*str == '\0')
+	    return (0);
+	while (*str == '0')
+	    str++;
+	if (ft_strlen(str) > 10)
+	    return (0);
+	while (*str)
+	{
+	    if (!(*str >= '0' && *str <= '9'))
+	        return (0);
+	   number *= 10;
+	   number += *str++ - '0';
+	}
+	if (number * sign  < INT32_MIN || number * sign > INT32_MAX)
+	    return (0);
 	return (1);
 }
 

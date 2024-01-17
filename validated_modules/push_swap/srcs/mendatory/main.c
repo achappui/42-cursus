@@ -6,48 +6,11 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 16:21:23 by achappui          #+#    #+#             */
-/*   Updated: 2024/01/13 19:25:39 by achappui         ###   ########.fr       */
+/*   Updated: 2024/01/17 15:37:37 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-static void	init_stack(t_stack *s)
-{
-	s->mem_size = 0;
-	s->stack = NULL;
-	s->size = 0;
-	s->top = 0;
-}
-
-static void	free_stacks(t_push_swap *ps)
-{
-	if (ps->a.stack)
-		free(ps->a.stack);
-	if (ps->b.stack)
-		free(ps->b.stack);
-}
-
-static char	already_sorted(t_stack *s)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (i < s->size - 1)
-	{
-		if (s->stack[i] > s->stack[i + 1])
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-void	error_handler(t_push_swap *ps)
-{
-	free_stacks(ps);
-	write(2, "Error\n", 6);
-	exit(1);
-}
 
 int	main(int argc, char **argv)
 {
@@ -55,14 +18,13 @@ int	main(int argc, char **argv)
 
 	if (argc < 2)
 		return (0);
-	init_stack(&ps.a);
-	init_stack(&ps.b);
 	input_handler(&ps, argc, argv);
 	if (!ps.a.size)
 	{
 		free_stacks(&ps);
 		return (0);
 	}
+	init_instructions_list(&ps);
 	if (!already_sorted(&ps.a))
 	{
 		if (ps.a.size == 2)
@@ -72,6 +34,8 @@ int	main(int argc, char **argv)
 		else
 			sorting_algo(&ps);
 	}
+	print_instructions(&ps);
 	free_stacks(&ps);
+	free_instructions_list(&ps);
 	return (0);
 }

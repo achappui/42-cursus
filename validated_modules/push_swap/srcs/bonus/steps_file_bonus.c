@@ -47,5 +47,7 @@ void	run_steps(t_push_swap *ps)
 		validate_and_execute_in(ps, in);
 		free(in);
 		in = get_next_line(0);
+		if ((void *)in == (void *)-1)
+			error_handler(ps);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:58:59 by achappui          #+#    #+#             */
-/*   Updated: 2024/01/13 20:03:03 by achappui         ###   ########.fr       */
+/*   Updated: 2024/01/17 15:34:08 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,7 @@ static void	free_split_list(t_list *list)
 void	input_error_handler(t_push_swap *ps, t_list *list)
 {
 	if (ps)
-	{
-		if (ps->a.stack)
-			free(ps->a.stack);
-		if (ps->b.stack)
-			free(ps->b.stack);
-	}
+		free_stacks(ps);
 	if (list)
 		free_split_list(list);
 	write(2, "Error\n", 6);
@@ -103,6 +98,8 @@ void	input_handler(t_push_swap *ps, int argc, char *argv[])
 	t_list	input_list;
 	int		nb_of_elem;
 
+	init_stack(&ps->a);
+	init_stack(&ps->b);
 	input_list.content = NULL;
 	input_list.next = NULL;
 	nb_of_elem = 0;

@@ -2,7 +2,7 @@ NAME		=	push_swap
 NAME_BONUS	=	checker
 
 SRC			=	main.c input_handler_1.c input_handler_2.c operations.c \
-				sorting_algo.c sorting_algo_utils.c radix_sort.c
+				sorting_algo.c sorting_algo_utils.c radix_sort.c utils.c
 SRC_BONUS	=	input_handler_1_bonus.c input_handler_2_bonus.c main_bonus.c \
 				operations_bonus.c steps_file_bonus.c
 OBJ			=	$(addprefix srcs/mendatory/, $(notdir $(SRC:%.c=%.o)))
