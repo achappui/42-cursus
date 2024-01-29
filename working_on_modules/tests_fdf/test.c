@@ -341,7 +341,7 @@ int main()
 	// param.img = img.img;
 	// param.mlx_ptr = mlx_ptr;
 	// param.win_ptr = win_ptr;
-	// mlx_key_hook(win_ptr, &get_key, &param);
+	mlx_mouse_hook(win_ptr, &get_key, &param);
     mlx_loop(mlx_ptr);
     return (0);
 }
