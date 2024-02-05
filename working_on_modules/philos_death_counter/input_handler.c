@@ -6,11 +6,21 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:04:17 by achappui          #+#    #+#             */
-/*   Updated: 2024/01/30 13:35:53 by achappui         ###   ########.fr       */
+/*   Updated: 2024/02/05 01:09:02 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+static int	ft_strlen(const char *s)
+{
+	int	len;
+
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
+}
 
 static int	ft_uatoi(const char *str)
 {
@@ -29,49 +39,42 @@ static int	ft_uatoi(const char *str)
 	return (number);
 }
 
-int	ft_strlen(const char *s)
-{
-	int	len;
-
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
-}
-
 static char	valid_ushort(const char *str)
 {
 	unsigned int	number;
 
 	number = 0;
 	if (*str == '+')
-	    str++;
+		str++;
 	if (*str == '\0')
-	    return (0);
+		return (0);
 	while (*str == '0')
-	    str++;
+		str++;
 	if (ft_strlen(str) > 5)
-	    return (0);
+		return (0);
 	while (*str)
 	{
-	    if (!(*str >= '0' && *str <= '9'))
-	        return (0);
-	   number *= 10;
-	   number += *str++ - '0';
+		if (!(*str >= '0' && *str <= '9'))
+			return (0);
+		number *= 10;
+		number += *str++ - '0';
 	}
 	if (number > 65535)
-	    return (0);
+		return (0);
 	return (1);
 }
 
-void	print_inputs(t_datas *datas)
+char	error_inputs_handler(char err_no)
 {
-	printf("nb_of_philo: %d\n", datas->nb_of_philo);
-	printf("die_time: %d\n", datas->die_time);
-	printf("eat_time: %d\n", datas->eat_time);
-	printf("sleep_time: %d\n", datas->sleep_time);
-	printf("max_meal_nb: %d\n", datas->max_meal_nb);
-	printf("no_meal_limit: %d\n", datas->no_meal_limit);
+	if (err_no == 1)
+		write(2, "ERROR: invalid argument number\n", 31);
+	else if (err_no == 2)
+		write(2, "ERROR: arguments must be of type unsigned short\n", 48);
+	else if (err_no == 3)
+		write(2, "ERROR: too much philosophers (max is 1000)\n", 43);
+	else if (err_no == 4)
+		write(2, "ERROR: not enough philosopher (min is 1)\n", 41);
+	return (0);
 }
 
 char	input_handler(t_datas *datas, int argc, char *argv[])
@@ -79,24 +82,25 @@ char	input_handler(t_datas *datas, int argc, char *argv[])
 	int	i;
 
 	if (argc != 5 && argc != 6)
-		return (write(2, "Invalid number of argument !\n", 29));
+		return (error_inputs_handler(1));
 	i = 0;
 	while (++i < argc)
 		if (!valid_ushort(argv[i]))
-			return (write(2, "Arguments must be of type unsigned short !\n", 43));
+			return (error_inputs_handler(2));
 	datas->nb_of_philo = ft_uatoi(argv[1]);
-	datas->die_time = ft_uatoi(argv[2]) * 1000;
-	datas->eat_time = ft_uatoi(argv[3]) * 1000;
-	datas->sleep_time = ft_uatoi(argv[4]) * 1000;
-	datas->no_meal_limit = 0;
-	datas->max_meal_nb = 0; //pas necessaire
+	if (datas->nb_of_philo > 1000)
+		return (error_inputs_handler(3));
+	if (datas->nb_of_philo == 0)
+		return (error_inputs_handler(4));
+	datas->time_to_die = ft_uatoi(argv[2]);
+	datas->time_to_eat = ft_uatoi(argv[3]) * 1000;
+	datas->time_to_sleep = ft_uatoi(argv[4]) * 1000;
+	datas->end_status = 0;
+	gettimeofday(&datas->start_time, NULL);
 	if (argc == 6)
-		datas->max_meal_nb = ft_uatoi(argv[5]);
+		datas->meal_limit = ft_uatoi(argv[5]);
 	else
-		datas->no_meal_limit = 1;
-	print_inputs(datas);
-	return (OK);
+		datas->meal_limit = NO_MEAL_LIMIT;
+	pthread_mutex_init(&datas->locker, NULL);
+	return (1);
 }
-//poser des limits max et min pour chaque arguments
-//changer le * 1000, determiner un nombre de micro seconde max
-//pas poser de limits mais checker avec des grosses valeurs
