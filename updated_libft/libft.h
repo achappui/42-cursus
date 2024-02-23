@@ -6,12 +6,14 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 11:56:41 by achappui          #+#    #+#             */
-/*   Updated: 2024/01/17 16:11:32 by achappui         ###   ########.fr       */
+/*   Updated: 2024/02/23 17:29:53 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
+# define WHITE_SPACES	" \t\n\v\f\r"
 
 # include <stdlib.h>
 # include <unistd.h>
