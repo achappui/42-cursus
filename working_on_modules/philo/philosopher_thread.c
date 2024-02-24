@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 01:13:03 by achappui          #+#    #+#             */
-/*   Updated: 2024/02/11 20:01:31 by achappui         ###   ########.fr       */
+/*   Updated: 2024/02/24 15:56:40 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ static char	eatt(t_philo *philo)
 		return (0);
 	}
 	usleep(philo->datas->time_to_eat);
+	pthread_mutex_lock(&philo->datas->global_lock);
+	if (++philo->meal_counter == philo->datas->meal_limit)
+		if (++philo->datas->finished_eating == philo->datas->nb_of_philo)
+			philo->datas->end_status = 1;
+	pthread_mutex_unlock(&philo->datas->global_lock);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 	return (1);

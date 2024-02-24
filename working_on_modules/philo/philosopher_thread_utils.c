@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 15:07:36 by achappui          #+#    #+#             */
-/*   Updated: 2024/02/11 20:01:39 by achappui         ###   ########.fr       */
+/*   Updated: 2024/02/24 15:53:50 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,6 @@ char	message(t_philo *philo, char message)
 	{
 		printf("\e[0m%u \e[1;37m%d \e[1;31mis eating\n", time, philo->id);
 		philo->last_meal = time;
-		if (++philo->meal_counter == philo->datas->meal_limit)
-			if (++philo->datas->finished_eating == philo->datas->nb_of_philo)
-				philo->datas->end_status = 1;
 	}
 	else if (message == SLEEPING)
 		printf("\e[0m%u \e[1;37m%d \e[0;36mis sleeping\n", time, philo->id);

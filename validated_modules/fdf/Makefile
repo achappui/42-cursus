@@ -18,6 +18,9 @@ $(NAME): $(OBJ)
 	make -C libft
 	$(CC) $(CFLAGS) -L minilibx -lmlx -L libft -lft -lm $^ -o $@ -framework OpenGL -framework AppKit
 
+norm:
+	norminette display_map_1.c display_map_2.c display_map_3.c fdf.h initializers.c keyboard_actions_1.c keyboard_actions_2.c keyboard_actions_3.c main.c nocolor_map.c parsing_1.c parsing_2.c parsing_3.c utils.c libft
+
 clean:
 	make clean -C minilibx
 	make clean -C libft
@@ -29,4 +32,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re norm

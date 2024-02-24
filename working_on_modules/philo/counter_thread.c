@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:02:42 by achappui          #+#    #+#             */
-/*   Updated: 2024/02/11 19:56:45 by achappui         ###   ########.fr       */
+/*   Updated: 2024/02/24 15:59:35 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,14 @@ void	*counter_thread(void *args)
 		timer = philo->datas->time_to_die - timer;
 		pthread_mutex_unlock(&philo->datas->global_lock);
 	}
-	if (philo->datas->nb_of_philo == 1) //pas correct de unlock la fork de qqn d'autre
+	if (philo->datas->nb_of_philo == 1)
+	{
+		
+		pthread_mutex_lock(philo->right_fork);
+		printf("\e[0m%u \e[1;37m%d \e[1;33mhas taken a fork\n", time, philo->id);
 		pthread_mutex_unlock(philo->right_fork);
+		printf("\e[0m%u \e[1;37m%d \e[0;31mdied\n", \
+		get_time(&philo->datas->start_time), philo->id);
+	}
 	return (NULL);
 }

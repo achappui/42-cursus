@@ -6,7 +6,7 @@
 /*   By: achappui <achappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:43:38 by achappui          #+#    #+#             */
-/*   Updated: 2024/02/23 14:56:10 by achappui         ###   ########.fr       */
+/*   Updated: 2024/02/24 15:18:51 by achappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	print_commands(void)
 {
 	ft_printf("COMMANDS:\n");
+	ft_printf("Translate --> arrows\n");
 	ft_printf("Rotate X --> Q and A\n");
 	ft_printf("Rotate Y --> W and S\n");
 	ft_printf("Rotate Z --> E and D\n");
