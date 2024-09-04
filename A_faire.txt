@@ -1,0 +1,6 @@
+Cloner et ajouter
+philosopher
+minishell
+miniRT
+
+Dans le dossier validated
