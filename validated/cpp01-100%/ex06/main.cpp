@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Harl.hpp"
 
-int	main()
+int	main(void)
 {
 	Harl	harl;
 

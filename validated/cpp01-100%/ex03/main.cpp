@@ -2,7 +2,7 @@
 #include "HumanB.hpp"
 #include "Weapon.hpp"
 
-int main()
+int main(void)
 {
 	{
 		Weapon club = Weapon("crude spiked club");

@@ -2,7 +2,7 @@
 #include <string>
 #include "colors.hpp"
 
-int	main()
+int	main(void)
 {
 	std::string		stringVar = "HI THIS IS BRAIN";
 	std::string		*stringPtr = &stringVar;
