@@ -38,6 +38,11 @@ int main(void)
     {
         std::cerr << e.what() << '\n';
     }
+	std::cout << SALMON;
+	std::cout << "Testing size method: " << std::endl;
+	std::cout << RESET;
+	std::cout << "Size of test: " << test.size() << std::endl;
+	std::cout << "Size of testEmpty: " << testEmpty.size() << std::endl;
 
 	std::cout << SALMON;
 	std::cout << "Testing copy constructor (for deep copy): " << std::endl;
