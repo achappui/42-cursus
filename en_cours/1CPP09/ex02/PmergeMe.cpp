@@ -264,9 +264,9 @@ void	PmergeMe::resolveLtree(t_ltree &tree, t_ltree &restTree)
 		while (1)
 		{
 			//Insert element if IT IS NOT an already inserted one at this rank
-			if (calculRank(tree[j - 1].size()) == rank)
+			if (calculRank((*lTreeAtN(tree.begin(), j - 1, TO_RIGHT)).size()) == rank)
 			{
-				binaryInsertLtree(tree, t_lbranch(tree[j - 1].begin() + (tree[j - 1].size() >> 1), tree[j - 1].end()), j - 1);
+				binaryInsertLtree(tree, restTree, j - 1, REST_OFF);
 				// tree[j].resize(tree[j].size() >> 1);
 				j++;
 			}
@@ -282,7 +282,7 @@ void	PmergeMe::resolveLtree(t_ltree &tree, t_ltree &restTree)
 					//Insert rest if any
 					if (restTree.size() && calculRank(restTree.back().size()) == rank - 1)
 					{
-						binaryInsertLtree(tree, restTree.back(), tree.size());
+						binaryInsertLtree(tree, restTree, tree.size(), REST_ON);
 						restTree.resize(restTree.size() - 1);
 					}
 					j = tree.size();
@@ -295,30 +295,69 @@ void	PmergeMe::resolveLtree(t_ltree &tree, t_ltree &restTree)
 	}
 }
 
-void    PmergeMe::binaryInsertLtree(t_ltree &tree, t_lbranch whatBegin, size_t size) //what doit avoir une valeur
+t_ltree::iterator	PmergeMe::lTreeAtN(t_ltree::iterator startIdx, size_t n, bool mode)
 {
-    size_t	downBoard = 0;
-    size_t	upBoard = size;
-	size_t	mid = downBoard + ((upBoard - downBoard) >> 1);
+	if (mode == TO_LEFT)
+		while (n-- > 0)
+			startIdx--;
+	else
+		while (n-- > 0)
+			startIdx++;
+	return (startIdx);
+}
 
-	if (size == 0)
-		tree.insert(tree.begin(), what);
-	else if (what.front() >= tree.back().front())
-	    tree.insert(tree.end(), what);
-	else if (what.front() <= tree.front().front())
-	    tree.insert(tree.begin(), what);
+t_lbranch::iterator	PmergeMe::lBranchAtN(t_lbranch::iterator startIdx, size_t n, bool mode)
+{
+	if (mode == TO_LEFT)
+		while (n-- > 0)
+			startIdx--;
+	else
+		while (n-- > 0)
+			startIdx++;
+	return (startIdx);
+}
+
+void    PmergeMe::binaryInsertLtree(t_ltree &tree, t_ltree &restTree, size_t pos, bool mode) //what doit avoir une valeur
+{
+    size_t				downBoard = 0; //mettre what en ref passer rests tab a la palce
+    size_t				upBoard = pos;
+	size_t				mid = downBoard + ((upBoard - downBoard) >> 1);
+	t_ltree				what(1);
+	t_ltree::iterator	itPos = lTreeAtN(tree.begin(), pos, TO_RIGHT);
+	t_ltree::iterator	it;
+
+	if (mode == REST_ON)
+		what.front().splice(what.front().begin(), restTree.back(), restTree.back().begin(), restTree.back().end());
+	else
+	{
+		what.front().splice(what.front().begin(), (*itPos), lBranchAtN((*itPos).begin(), (*itPos).size() >> 1, TO_RIGHT), (*itPos).end());
+		(*itPos).resize((*itPos).size() >> 1);
+	}
+
+	if (pos == 0)
+		tree.splice(tree.begin(), what);
+	else if (what.front().front() >= tree.back().front())
+	    tree.splice(tree.end(), what);
+	else if (what.front().front() <= tree.front().front())
+	    tree.splice(tree.begin(), what);
 	else
     {
+		it = lTreeAtN(tree.begin(), mid, TO_RIGHT);
     	while (upBoard - downBoard > 1)
     	{
-
-    		if (what.front() > tree[mid][0])
+    		if (what.front().front() > (*it).front())
+			{
                 downBoard = mid;
+				it = lTreeAtN(it, (upBoard - downBoard) >> 1, TO_RIGHT);
+			}
     		else
+			{
     			upBoard = mid;
+				it = lTreeAtN(it, (upBoard - downBoard) >> 1, TO_LEFT);
+			}
     		mid = downBoard + ((upBoard - downBoard) >> 1);
     	}
-        tree.insert(tree.begin() + upBoard, what);
+        tree.splice(it, what);
     }
 }
 

@@ -7,6 +7,10 @@
 # include "uArray.hpp"
 
 # define JACOBSTHAL_SIZE    32
+# define REST_ON			1
+# define REST_OFF			0
+# define TO_LEFT			1
+# define TO_RIGHT			0
 
 typedef std::vector<std::vector<unsigned> > t_vtree;
 typedef std::vector<unsigned>				t_vbranch;
@@ -29,9 +33,11 @@ private:
     void        resolveVtree(t_vtree &tree, t_vtree &restTree);
     void        binaryInsertVtree(t_vtree &tree, t_vbranch what, size_t size);
 
-    void        makeLtree(t_ltree &tree, t_ltree &restTree);
-    void        resolveLtree(t_ltree &tree, t_ltree &restTree);
-    void        binaryInsertLtree(t_ltree &tree, t_lbranch what, size_t size);
+    void       			makeLtree(t_ltree &tree, t_ltree &restTree);
+    void        		resolveLtree(t_ltree &tree, t_ltree &restTree);
+    void      			binaryInsertLtree(t_ltree &tree, t_ltree &restTree, size_t pos, bool mode);
+	t_ltree::iterator	lTreeAtN(t_ltree::iterator startIdx, size_t n, bool mode);
+	t_lbranch::iterator	lBranchAtN(t_lbranch::iterator startIdx, size_t n, bool mode);
 
     unsigned    jacobsthalGetN(size_t n);
 	unsigned    jacobsthalCalculN(size_t n);

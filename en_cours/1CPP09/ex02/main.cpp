@@ -49,12 +49,12 @@ int	main(int argc, char **argv) //Faire un if qui empeche de mettre tant de nomb
     	std::cout	<< "Time to process a range of " << arr.size << " elements with std::list : "
     				<< pmerge.sortFuncNtimes(&PmergeMe::sortListTree, 100) << " us" << std::endl;
 
-    	std::cout << "===VECTOR TEST===" << std::endl;
-    	std::cout << "Before:	" << pmerge.vectorTreeToStr(pmerge.getVectorTree()) << std::endl;
-    	pmerge.sortVectorTree();
-    	std::cout << "After:	" << pmerge.vectorTreeToStr(pmerge.getSortedVectorTree()) << std::endl;
-    	std::cout	<< "Time to process a range of " << arr.size << " elements with std::vector : "
-    				<< pmerge.sortFuncNtimes(&PmergeMe::sortVectorTree, 100) << " us" << std::endl;
+    	// std::cout << "===VECTOR TEST===" << std::endl;
+    	// std::cout << "Before:	" << pmerge.vectorTreeToStr(pmerge.getVectorTree()) << std::endl;
+    	// pmerge.sortVectorTree();
+    	// std::cout << "After:	" << pmerge.vectorTreeToStr(pmerge.getSortedVectorTree()) << std::endl;
+    	// std::cout	<< "Time to process a range of " << arr.size << " elements with std::vector : "
+    	// 			<< pmerge.sortFuncNtimes(&PmergeMe::sortVectorTree, 100) << " us" << std::endl;
     }
     catch (std::exception &e)
     {
