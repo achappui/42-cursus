@@ -1,5 +1,4 @@
 #include "uArray.hpp"
-#include <cctype>
 #include <sstream>
 #include <iostream>
 

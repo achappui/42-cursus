@@ -1,12 +1,10 @@
 #include "PmergeMe.hpp"
 #include "uArray.hpp"
-#include <cstddef>
-#include <cstdio>
 #include <iostream>
-#include <cstdlib>
 #include <sstream>
-#include <cmath>
+#include <string>
 #include <vector>
+#include <list>
 
 PmergeMe::PmergeMe()
     :   m_jacobSthalNumbers(NULL),
@@ -111,7 +109,7 @@ void    PmergeMe::makeVtree(t_vtree &tree, t_vtree &restTree)
     size_t    i = 0;
     size_t    half = 0;
 
-    if (tree.size() < 2) //A verifier
+    if (tree.size() < 2)
         return ;
     //Make the tree
     while (tree.size() > 1)
@@ -136,7 +134,7 @@ void	PmergeMe::resolveVtree(t_vtree &tree, t_vtree &restTree)
 {
 	size_t	i = 2;
 	size_t	j = jacobsthalGetN(i);
-	size_t	rank = calculRank(tree[0].size()); //Il faut au moins un element;
+	size_t	rank = calculRank(tree[0].size());
 	bool	jacobLastTurn = 0;
 
 	while (rank > 0)
@@ -149,8 +147,7 @@ void	PmergeMe::resolveVtree(t_vtree &tree, t_vtree &restTree)
 			//Insert element if IT IS NOT an already inserted one at this rank
 			if (calculRank(tree[j - 1].size()) == rank)
 			{
-				binaryInsertVtree(tree, t_vbranch(tree[j - 1].begin() + (tree[j - 1].size() >> 1), tree[j - 1].end()), j - 1);
-				tree[j].resize(tree[j].size() >> 1);
+			    binaryInsertVtree(tree, restTree, j - 1, REST_OFF);
 				j++;
 			}
 			if (j == jacobsthalGetN(i - 1))
@@ -164,10 +161,7 @@ void	PmergeMe::resolveVtree(t_vtree &tree, t_vtree &restTree)
 					jacobLastTurn = 1;
 					//Insert rest if any
 					if (restTree.size() && calculRank(restTree[restTree.size() - 1].size()) == rank - 1)
-					{
-						binaryInsertVtree(tree, restTree[restTree.size() - 1], tree.size());
-						restTree.resize(restTree.size() - 1);
-					}
+					    binaryInsertVtree(tree, restTree, tree.size(), REST_ON);
 					j = tree.size();
 				}
 			}
@@ -178,15 +172,25 @@ void	PmergeMe::resolveVtree(t_vtree &tree, t_vtree &restTree)
 	}
 }
 
-
-
-void    PmergeMe::binaryInsertVtree(t_vtree &tree, t_vbranch what, size_t size) //what doit avoir une valeur
+void    PmergeMe::binaryInsertVtree(t_vtree &tree, t_vtree &restTree, size_t pos, bool mode)
 {
-    size_t	downBoard = 0;
-    size_t	upBoard = size;
-	size_t	mid = downBoard + ((upBoard - downBoard) >> 1);
+    size_t      downBoard = 0;
+    size_t      upBoard = pos;
+	size_t      mid = downBoard + ((upBoard - downBoard) >> 1);
+	t_vbranch   what;
 
-	if (size == 0)
+	if (mode == REST_ON)
+	{
+	    what = restTree[restTree.size() - 1];
+		restTree.resize(restTree.size() - 1);
+	}
+	else
+	{
+	    what.insert(what.begin(), tree[pos].begin() + (tree[pos].size() >> 1), tree[pos].end());
+	    tree[pos].resize(tree[pos].size() >> 1);
+	}
+
+	if (pos == 0)
 		tree.insert(tree.begin(), what);
 	else if (what[0] >= tree[upBoard - 1][0])
 	    tree.insert(tree.begin() + upBoard, what);
@@ -223,18 +227,17 @@ void    PmergeMe::makeLtree(t_ltree &tree, t_ltree &restTree)
     t_ltree::iterator   itStart;
     t_ltree::iterator   itEnd;
 
-    if (tree.size() < 2) //A verifier
+    if (tree.size() < 2)
         return ;
     //Make the tree
     while (tree.size() > 1)
     {
+        itEnd = tree.end();
         if (tree.size() & 1)
         {
             restTree.push_back(tree.back());
-            itEnd = --tree.end();
+            itEnd--;
         }
-        else
-            itEnd = tree.end();
         itStart = tree.begin();
         while(itStart != itEnd)
         {
@@ -253,7 +256,7 @@ void	PmergeMe::resolveLtree(t_ltree &tree, t_ltree &restTree)
 {
 	size_t	i = 2;
 	size_t	j = jacobsthalGetN(i);
-	size_t	rank = calculRank(tree.front().size()); //Il faut au moins un element;
+	size_t	rank = calculRank(tree.front().size());
 	bool	jacobLastTurn = 0;
 
 	while (rank > 0)
@@ -266,8 +269,7 @@ void	PmergeMe::resolveLtree(t_ltree &tree, t_ltree &restTree)
 			//Insert element if IT IS NOT an already inserted one at this rank
 			if (calculRank((*lTreeAtN(tree.begin(), j - 1, TO_RIGHT)).size()) == rank)
 			{
-				binaryInsertLtree(tree, restTree, j - 1, REST_OFF);
-				// tree[j].resize(tree[j].size() >> 1);
+			    binaryInsertLtree(tree, restTree, j - 1, REST_OFF);
 				j++;
 			}
 			if (j == jacobsthalGetN(i - 1))
@@ -281,10 +283,7 @@ void	PmergeMe::resolveLtree(t_ltree &tree, t_ltree &restTree)
 					jacobLastTurn = 1;
 					//Insert rest if any
 					if (restTree.size() && calculRank(restTree.back().size()) == rank - 1)
-					{
-						binaryInsertLtree(tree, restTree, tree.size(), REST_ON);
-						restTree.resize(restTree.size() - 1);
-					}
+					    binaryInsertLtree(tree, restTree, tree.size(), REST_ON);
 					j = tree.size();
 				}
 			}
@@ -317,9 +316,9 @@ t_lbranch::iterator	PmergeMe::lBranchAtN(t_lbranch::iterator startIdx, size_t n,
 	return (startIdx);
 }
 
-void    PmergeMe::binaryInsertLtree(t_ltree &tree, t_ltree &restTree, size_t pos, bool mode) //what doit avoir une valeur
+void    PmergeMe::binaryInsertLtree(t_ltree &tree, t_ltree &restTree, size_t pos, bool mode)
 {
-    size_t				downBoard = 0; //mettre what en ref passer rests tab a la palce
+    size_t				downBoard = 0;
     size_t				upBoard = pos;
 	size_t				mid = downBoard + ((upBoard - downBoard) >> 1);
 	t_ltree				what(1);
@@ -327,15 +326,15 @@ void    PmergeMe::binaryInsertLtree(t_ltree &tree, t_ltree &restTree, size_t pos
 	t_ltree::iterator	it;
 
 	if (mode == REST_ON)
-		what.front().splice(what.front().begin(), restTree.back(), restTree.back().begin(), restTree.back().end());
-	else
 	{
-		what.front().splice(what.front().begin(), (*itPos), lBranchAtN((*itPos).begin(), (*itPos).size() >> 1, TO_RIGHT), (*itPos).end());
-		(*itPos).resize((*itPos).size() >> 1);
+		what.front().splice(what.front().begin(), restTree.back(), restTree.back().begin(), restTree.back().end());
+		restTree.resize(restTree.size() - 1);
 	}
+	else
+		what.front().splice(what.front().begin(), (*itPos), lBranchAtN((*itPos).begin(), (*itPos).size() >> 1, TO_RIGHT), (*itPos).end());
 
 	if (pos == 0)
-		tree.splice(tree.begin(), what);
+	    tree.splice(tree.begin(), what);
 	else if (what.front().front() >= tree.back().front())
 	    tree.splice(tree.end(), what);
 	else if (what.front().front() <= tree.front().front())
@@ -354,9 +353,13 @@ void    PmergeMe::binaryInsertLtree(t_ltree &tree, t_ltree &restTree, size_t pos
 			{
     			upBoard = mid;
 				it = lTreeAtN(it, (upBoard - downBoard) >> 1, TO_LEFT);
+				if ((upBoard - downBoard) & 1)
+				    it--;
 			}
     		mid = downBoard + ((upBoard - downBoard) >> 1);
     	}
+        if (mid != upBoard)
+            it++;
         tree.splice(it, what);
     }
 }
@@ -396,9 +399,9 @@ unsigned	PmergeMe::jacobsthalCalculN(size_t n)
 	if (n >= sizeof(size_t) * 8)
 		throw BadJacobsthalIndex();
 	if (n & 1)
-		result = (static_cast<size_t>(pow(2, n)) + 1) / 3;
+		result = ((1 << n) + 1) / 3;
 	else
-		result = (static_cast<size_t>(pow(2, n)) - 1) / 3;
+		result = ((1 << n) - 1) / 3;
 	return (result);
 }
 

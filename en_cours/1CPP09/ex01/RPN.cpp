@@ -1,4 +1,6 @@
 #include "RPN.hpp"
+#include <stack>
+#include <string>
 #include <iostream>
 
 //public
@@ -61,7 +63,7 @@ int	RPN::calculResult(void) const
 			stack.pop();
 			tab[0] = stack.top();
 			stack.pop();
-			switch (m_instructions[i]) //Unfortunately we have to change those lines if we change the operator Define
+			switch (m_instructions[i])
 			{
 			case '+':
 				tmpResult = tab[0] + tab[1];

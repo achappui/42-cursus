@@ -1,6 +1,6 @@
 
-#ifndef MYARRAY_hpp
-# define MYARRAY_hpp
+#ifndef UARRAY_HPP
+# define UARRAY_HPP
 
 #include <cstddef>
 

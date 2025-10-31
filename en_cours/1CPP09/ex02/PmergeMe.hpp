@@ -31,7 +31,7 @@ private:
 
     void        makeVtree(t_vtree &tree, t_vtree &restTree);
     void        resolveVtree(t_vtree &tree, t_vtree &restTree);
-    void        binaryInsertVtree(t_vtree &tree, t_vbranch what, size_t size);
+    void        binaryInsertVtree(t_vtree &tree, t_vtree &restTree, size_t pos, bool mode);
 
     void       			makeLtree(t_ltree &tree, t_ltree &restTree);
     void        		resolveLtree(t_ltree &tree, t_ltree &restTree);

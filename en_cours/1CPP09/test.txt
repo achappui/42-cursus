@@ -1,0 +1,65 @@
+main.cpp
+
+        // pmerge.sortVectorTree();
+        // std::cout << pmerge.vectorTreeToStr(pmerge.getSortedVectorTree()) << std::endl;
+        // std::cout << "Comp: " << PmergeMe::DEBUG_COMPARISONS(GET) << std::endl;
+
+        // pmerge.sortListTree();
+        // std::cout << pmerge.listTreeToStr(pmerge.getSortedListTree()) << std::endl;
+        // std::cout << "Comp: " << PmergeMe::DEBUG_COMPARISONS(GET) << std::endl;
+
+        // std::cout << "Jacobsthal numbers: " << std::endl;
+        // pmerge.displayJacobsthalNumbers();
+
+
+tester.py
+import subprocess
+import random
+import statistics
+
+# paramètres
+n = 1000  # nombre d'exécutions
+k = 3000  # taille de la liste
+unsigned_min = 0
+unsigned_max = 4294967295
+program = "./PmergeMe"
+
+comparisons = []
+
+for i in range(n):
+    numbers = random.sample(range(unsigned_min, unsigned_max + 1), k)
+    args = [program] + list(map(str, numbers))
+    result = subprocess.run(args, capture_output=True, text=True)
+    output = result.stdout.strip().splitlines()
+
+    if len(output) < 2:
+        print(f"[Run {i}] Erreur : sortie invalide.")
+        continue
+
+    sorted_numbers = list(map(int, output[0].split()))
+    comp_line = output[1]
+    try:
+        comp = int(comp_line.split(":")[1].strip())
+    except:
+        print(f"[Run {i}] Erreur lecture comparaisons : {comp_line}")
+        continue
+
+    # vérification des nombres
+    if sorted(numbers) != sorted_numbers:
+        print(f"[Run {i}] Erreur : les nombres ne correspondent pas.")
+        continue
+
+    # vérification du tri
+    if sorted_numbers != sorted(sorted_numbers):
+        print(f"[Run {i}] Erreur : la liste n'est pas triée.")
+        continue
+
+    comparisons.append(comp)
+
+if comparisons:
+    print(f"\nRuns valides : {len(comparisons)}/{n}")
+    print(f"Best case (min comparisons): {min(comparisons)}")
+    print(f"Average case: {statistics.mean(comparisons):.2f}")
+    print(f"Worst case (max comparisons): {max(comparisons)}")
+else:
+    print("Aucun run valide.")

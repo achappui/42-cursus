@@ -17,6 +17,8 @@ private:
 	float	findExchangeRate(const Date& date);
 
 public:
+    class BadDatabaseFirstLine : public std::exception {public: const char *what() const throw() {return ("'date,exchange_rate' expected at the begining of the database !");}};
+    class BadFileFirstLine : public std::exception {public: const char *what() const throw() {return ("'date | value' expected at the begining of the file !");}};
 	class EmptyDatabase : public std::exception {public: const char *what() const throw() {return ("Empty database !");}};
 	class FileOpenError : public std::exception {public: const char *what() const throw() {return ("Could not open the file !");}};
 	class InvalidLine : public std::exception {public: const char *what() const throw() {return ("Invalid line !");}};

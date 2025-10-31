@@ -1,11 +1,11 @@
-NAME		=	btc
-CC		=	c++
-FLAGS		=	-Werror -Wextra -Wall -std=c++98 -pedantic
+NAME	= btc
+CC		= c++
+FLAGS	= -Werror -Wextra -Wall -std=c++98 -pedantic
 
-SRC		=	main.cpp BitcoinExchange.cpp Date.cpp
-OBJ		=	$(SRC:.cpp=.o)
+SRC		= main.cpp BitcoinExchange.cpp Date.cpp
+OBJ		= main.o BitcoinExchange.o Date.o
 
-RM		=	rm -f
+RM		= rm -f
 
 all:		$(NAME)
 

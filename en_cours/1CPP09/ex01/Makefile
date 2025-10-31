@@ -1,22 +1,18 @@
-NAME			= RPN
-CC				= c++
-FLAGS			= -Werror -Wextra -Wall -std=c++98 -pedantic
+NAME	= RPN
+CC		= c++
+FLAGS	= -Werror -Wextra -Wall -std=c++98 -pedantic
 
-GREEN = \033[0;92m
-YELLOW = \033[0;93m
-ENDCOLOR = \033[0;39m
+SRC		= RPN.cpp main.cpp
+OBJ		= RPN.o main.o
 
-SRC	=   RPN.cpp main.cpp
-OBJ =	$(SRC:.cpp=.o)
-
-RM = rm -f
+RM		= rm -f
 
 all:		$(NAME)
 
 
 $(NAME):	$(OBJ)
 			@$(CC) -o $(NAME) $(OBJ)
-			@echo "$(GREEN) Done ! $(ENDCOLOR)"
+			@echo "Done !"
 
 %.o: %.cpp
 			@$(CC) $(FLAGS) -c $< -o $@
@@ -26,7 +22,7 @@ clean:
 
 fclean:		clean
 			@$(RM) $(NAME)
-			@echo "$(YELLOW) Cleaned ! $(ENDCOLOR)"
+			@echo "Cleaned !"
 
 re:			fclean all
 

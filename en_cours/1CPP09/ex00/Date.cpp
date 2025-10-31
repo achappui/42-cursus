@@ -3,6 +3,7 @@
 #include <ctime>
 #include <sstream>
 #include <iomanip>
+#include <string>
 
 void	Date::validateDateFormat(const std::string& str)
 {

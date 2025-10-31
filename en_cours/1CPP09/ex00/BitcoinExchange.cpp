@@ -41,7 +41,9 @@ void	BitcoinExchange::loadDatabase(std::string databasePath)
 	if (!file.is_open())
 		throw FileOpenError();
 	m_database.clear();
-	std::getline(file, line); //To get rid of first row
+	std::getline(file, line);
+	if (line.size() < 18 || !(line.substr(0, line.find(",")) == "date" && line.substr(line.find(",") + 1) == "exchange_rate"))
+	    throw BadDatabaseFirstLine();
 	while (std::getline(file, line))
 	{
 		validateLine(line, ",");
@@ -63,7 +65,10 @@ void	BitcoinExchange::displayValuesFromFile(std::string filePath)
 	if (!file.is_open())
 		throw FileOpenError();
 
-	std::getline(file, line);  //To get rid of first row
+
+	std::getline(file, line);
+	if (line.size() < 12 || !(line.substr(0, line.find(" | ")) == "date" && line.substr(line.find(" | ") + 3) == "value"))
+	    throw BadFileFirstLine();
 	while (std::getline(file, line))
 	{
 		try
